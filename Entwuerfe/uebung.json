@@ -1,0 +1,31 @@
+{
+    "id": "12345",
+    "name": "Sample Item",
+    "profile_id": "profile_001",
+    "training_exercises": [
+        {
+            "exercise_id": "ex1",
+            "order": 1,
+            "Equipment": "Dumbbells",
+            "Sets_x_Reps": "3 x 12",
+            "break_time_seconds": 60,
+            "training_exercises_item": {
+                "item_id": "item1",
+                "item_description": "Item 1 description",
+                "video_url": "http://example.com/video1"
+            }
+        },
+        {
+            "exercise_id": "ex2",
+            "order": 2,
+            "Equipment": "10kg Barbell",
+            "Sets_x_Reps": "3 x 12",
+            "break_time_seconds": 60,
+            "training_exercises_item": {
+                "item_id": "item2",
+                "item_description": "Item 2 description",
+                "video_url": "http://example.com/video2"
+            }
+        }
+    ]
+}

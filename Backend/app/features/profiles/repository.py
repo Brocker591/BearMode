@@ -29,9 +29,7 @@ async def get_by_name(session: AsyncSession, name: str) -> Profile | None:
     return result.scalar_one_or_none()
 
 
-async def update(
-    session: AsyncSession, profile_id: UUID, name: str | None
-) -> Profile | None:
+async def update(session: AsyncSession, profile_id: UUID, name: str | None) -> Profile | None:
     profile = await get_by_id(session, profile_id)
     if profile is None:
         return None

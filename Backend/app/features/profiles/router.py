@@ -18,10 +18,7 @@ router = APIRouter()
 
 
 @router.post("", response_model=ProfileResponse, status_code=201)
-async def post_profile(
-    body: ProfileCreate,
-    session: AsyncSession = Depends(get_session),
-) -> ProfileResponse:
+async def post_profile(body: ProfileCreate, session: AsyncSession = Depends(get_session)) -> ProfileResponse:
     existing = await get_by_name(session, body.name)
     if existing is not None:
         raise HTTPException(status_code=409, detail="Name already exists")
@@ -30,18 +27,13 @@ async def post_profile(
 
 
 @router.get("", response_model=list[ProfileResponse])
-async def list_profiles(
-    session: AsyncSession = Depends(get_session),
-) -> list[ProfileResponse]:
+async def list_profiles(session: AsyncSession = Depends(get_session)) -> list[ProfileResponse]:
     profiles = await get_all_profiles(session)
     return [ProfileResponse.model_validate(p) for p in profiles]
 
 
 @router.get("/{profile_id}", response_model=ProfileResponse)
-async def get_profile(
-    profile_id: UUID,
-    session: AsyncSession = Depends(get_session),
-) -> ProfileResponse:
+async def get_profile(profile_id: UUID, session: AsyncSession = Depends(get_session)) -> ProfileResponse:
     profile = await get_by_id(session, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
@@ -49,29 +41,15 @@ async def get_profile(
 
 
 @router.put("/{profile_id}", response_model=ProfileResponse)
-async def put_profile(
-    profile_id: UUID,
-    body: ProfileUpdate,
-    session: AsyncSession = Depends(get_session),
-) -> ProfileResponse:
-    profile = await get_by_id(session, profile_id)
+async def put_profile(profile_id: UUID, body: ProfileUpdate, session: AsyncSession = Depends(get_session)) -> ProfileResponse:
+    profile = await update_profile(session, profile_id, body.name)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    if body.name is not None:
-        other = await get_by_name(session, body.name)
-        if other is not None and other.id != profile_id:
-            raise HTTPException(status_code=409, detail="Name already exists")
-    updated = await update_profile(session, profile_id, body.name)
-    if updated is None:
-        raise HTTPException(status_code=404, detail="Profile not found")
-    return ProfileResponse.model_validate(updated)
+    return ProfileResponse.model_validate(profile)
 
 
 @router.delete("/{profile_id}", status_code=204)
-async def delete_profile_endpoint(
-    profile_id: UUID,
-    session: AsyncSession = Depends(get_session),
-) -> None:
+async def delete_profile_endpoint(profile_id: UUID, session: AsyncSession = Depends(get_session)) -> None:
     deleted = await delete_profile(session, profile_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Profile not found")

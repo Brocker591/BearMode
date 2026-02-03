@@ -2,11 +2,12 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.features.health.router import router as health_router
-from app.features.profiles import models as profiles_models  # noqa: F401
-from app.features.profiles.router import router as profiles_router
 from app.infrastructure.database import Base, engine
+from app.features.health.router import router as health_router
+# from app.features.profiles import models as profiles_models  # noqa: F401
+from app.features.profiles.router import router as profiles_router
+# from app.features.training_exercise_items import models as training_exercise_items_models  # noqa: F401
+from app.features.training_exercise_items.router import router as training_exercise_items_router
 
 
 @asynccontextmanager
@@ -36,3 +37,5 @@ app.add_middleware(
 
 app.include_router(health_router, prefix="/health", tags=["health"])
 app.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
+app.include_router(training_exercise_items_router,
+                   prefix="/training-exercise-items", tags=["training-exercise-items"])

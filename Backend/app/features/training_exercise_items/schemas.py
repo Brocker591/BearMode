@@ -3,17 +3,17 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class TrainingExercisesItemCreate(BaseModel):
+class TrainingExerciseItemCreate(BaseModel):
     description: str
     video_url: str | None = None
 
 
-class TrainingExercisesItemUpdate(BaseModel):
-    description: str | None = None
+class TrainingExerciseItemUpdate(BaseModel):
+    description: str
     video_url: str | None = None
 
 
-class TrainingExercisesItemResponse(BaseModel):
+class TrainingExerciseItemResponse(BaseModel):
     id: UUID
     description: str
     video_url: str | None = None

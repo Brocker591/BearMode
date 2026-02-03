@@ -15,7 +15,8 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
-    }
+    },
+    autoHideMenuBar: true, // <-- Menü automatisch ausblenden
   });
 
   if (useDevServer) {

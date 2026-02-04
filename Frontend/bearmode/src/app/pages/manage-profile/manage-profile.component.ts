@@ -5,6 +5,8 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { ProfileService } from '../../services/profile.service';
 import type { Profile } from '../../models/profile';
 
@@ -17,7 +19,8 @@ import type { Profile } from '../../models/profile';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   templateUrl: './manage-profile.component.html',
   styleUrl: './manage-profile.component.css'
@@ -41,8 +44,9 @@ export class ManageProfileComponent implements OnInit {
 
   constructor(
     private readonly profileService: ProfileService,
-    private readonly snackBar: MatSnackBar
-  ) {}
+    private readonly snackBar: MatSnackBar,
+    private readonly dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.loadProfiles();
@@ -113,18 +117,30 @@ export class ManageProfileComponent implements OnInit {
   }
 
   deleteProfile(profile: Profile): void {
-    if (!confirm(`Profil „${profile.name}“ wirklich löschen?`)) return;
-    this.profileService.delete(profile.id).subscribe({
-      next: () => {
-        this.loadProfiles();
-        this.snackBar.open('Profil gelöscht.', 'OK', { duration: 3000 });
-      },
-      error: (err) => {
-        const msg =
-          err?.status === 404
-            ? 'Profil wurde nicht gefunden.'
-            : err?.detail ?? 'Löschen fehlgeschlagen.';
-        this.snackBar.open(msg, 'OK', { duration: 5000 });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Profil löschen',
+        message: `Möchten Sie das Profil „${profile.name}“ wirklich löschen?`,
+        confirmText: 'Löschen',
+        confirmColor: 'warn'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.profileService.delete(profile.id).subscribe({
+          next: () => {
+            this.loadProfiles();
+            this.snackBar.open('Profil gelöscht.', 'OK', { duration: 3000 });
+          },
+          error: (err) => {
+            const msg =
+              err?.status === 404
+                ? 'Profil wurde nicht gefunden.'
+                : err?.detail ?? 'Löschen fehlgeschlagen.';
+            this.snackBar.open(msg, 'OK', { duration: 5000 });
+          }
+        });
       }
     });
   }

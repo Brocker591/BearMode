@@ -1,0 +1,34 @@
+:host {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    --text: #0f172a;
+}
+
+h2[mat-dialog-title] {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    padding-bottom: 0.5rem;
+}
+
+mat-dialog-content {
+    color: #334155;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    overflow: hidden !important;
+    /* Force removal of scrollbar */
+    max-height: unset !important;
+    /* Allow growing if needed, though usually limited by viewport */
+    display: block;
+}
+
+mat-dialog-content p {
+    margin: 0;
+    /* Remove default paragraph margins */
+}
+
+mat-dialog-actions {
+    padding-bottom: 0;
+    gap: 0.5rem;
+}

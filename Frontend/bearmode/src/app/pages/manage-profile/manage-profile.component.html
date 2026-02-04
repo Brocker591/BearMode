@@ -1,53 +1,61 @@
-<div class="space-y-4">
-  <div class="flex flex-wrap items-center justify-between gap-4">
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-blue-600">ManageProfile</h2>
+<div class="page-container">
+  <div class="page-header">
+    <h2 class="page-title">Manage Profiles</h2>
     @if (!formState()) {
-    <button mat-flat-button color="primary" (click)="openCreate()">Neues Profil</button>
+    <button mat-flat-button color="primary" class="btn-create" (click)="openCreate()">Neues Profil</button>
     }
   </div>
 
   @if (errorMessage()) {
-  <div class="rounded-lg bg-red-100 px-4 py-2 text-red-800 dark:bg-red-900/30 dark:text-red-200">
+  <div class="error-banner">
     {{ errorMessage() }}
   </div>
   }
 
   @if (formState(); as state) {
-  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
-    <h3 class="mb-3 text-lg font-medium">{{ isEditMode() ? 'Profil bearbeiten' : 'Neues Profil' }}</h3>
-    <div class="flex flex-wrap items-end gap-3">
-      <mat-form-field appearance="outline" class="min-w-[200px]">
+  <div class="profile-form-card">
+    <h3 class="form-title">{{ isEditMode() ? 'Profil bearbeiten' : 'Neues Profil' }}</h3>
+    <div class="form-controls">
+      <mat-form-field appearance="outline" class="form-field-name">
         <mat-label>Name</mat-label>
         <input matInput [(ngModel)]="formNameValue" placeholder="Profilname" />
       </mat-form-field>
-      <button mat-button (click)="cancelForm()" [disabled]="formSaving()">Abbrechen</button>
-      <button mat-flat-button color="primary" (click)="saveForm()" [disabled]="formSaving()">
-        {{ formSaving() ? 'Speichern…' : 'Speichern' }}
-      </button>
+      <div class="form-actions">
+        <button mat-button (click)="cancelForm()" [disabled]="formSaving()">Abbrechen</button>
+        <button mat-flat-button color="primary" (click)="saveForm()" [disabled]="formSaving()">
+          {{ formSaving() ? 'Speichern…' : 'Speichern' }}
+        </button>
+      </div>
     </div>
   </div>
   }
 
-  <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+  <div class="table-container">
     @if (loading()) {
-    <div class="p-8 text-center text-gray-500">Laden…</div>
+    <div class="loading-state">Laden…</div>
     } @else {
-    <table mat-table [dataSource]="dataSource" class="w-full">
+    <table mat-table [dataSource]="dataSource" class="profiles-table">
+      <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        <td mat-cell *matCellDef="let row" class="cell-name">{{ row.name }}</td>
       </ng-container>
+
+      <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Aktionen</th>
-        <td mat-cell *matCellDef="let row">
+        <th mat-header-cell *matHeaderCellDef class="header-actions">Aktionen</th>
+        <td mat-cell *matCellDef="let row" class="cell-actions">
           <button mat-button color="primary" (click)="openEdit(row)">Bearbeiten</button>
           <button mat-button color="warn" (click)="deleteProfile(row)">Löschen</button>
         </td>
       </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <!-- No Data Row -->
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell py-4 text-center text-gray-500" [attr.colspan]="displayedColumns.length">
+        <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
           Keine Profile vorhanden.
         </td>
       </tr>

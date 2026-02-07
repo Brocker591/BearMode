@@ -11,6 +11,8 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
 import { ProfileService } from '../../services/profile.service';
 import type { Profile } from '../../models/profile';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -21,7 +23,8 @@ import type { Profile } from '../../models/profile';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule
   ],
   templateUrl: './manage-profile.component.html',
   styleUrl: './manage-profile.component.css'
@@ -43,6 +46,9 @@ export class ManageProfileComponent implements OnInit {
     return s != null && 'id' in s && s.id != null;
   });
 
+  // Animal emojis for profiles (same as SelectProfile)
+  readonly animalEmojis = ['🐻', '🦁', '🐯', '🐨', '🐼', '🦊', '🐰', '🐹', '🐶', '🐱', '🐸', '🐙', '🦄', '🐲', '🦉', '🦜', '🦝', '🐗'];
+
   constructor(
     private readonly profileService: ProfileService,
     private readonly snackBar: MatSnackBar,
@@ -57,6 +63,22 @@ export class ManageProfileComponent implements OnInit {
         this.openCreate();
       }
     });
+  }
+
+  getProfileEmoji(profile: Profile): string {
+    let hash = 0;
+    if (profile.id) {
+      for (let i = 0; i < profile.id.length; i++) {
+        hash = profile.id.charCodeAt(i) + ((hash << 5) - hash);
+      }
+    } else {
+      // Fallback if no ID (shouldnt happen on saved profiles)
+      for (let i = 0; i < profile.name.length; i++) {
+        hash = profile.name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+    }
+    const index = Math.abs(hash % this.animalEmojis.length);
+    return this.animalEmojis[index];
   }
 
   loadProfiles(): void {

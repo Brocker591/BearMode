@@ -1,10 +1,10 @@
 {
     "id": "12345",
     "name": "Sample Item",
-    "profile_id": "profile_001",
+    "profile_id": "c6fe91eb-ffa5-49fd-ac6f-6dbf1359f036",
     "training_exercises": [
         {
-            "exercise_id": "ex1",
+            "exercise_id": "3edb5a8d-716b-4c93-bc01-05893a39ba2a",
             "order": 1,
             "Equipment": "Dumbbells",
             "Sets_x_Reps": "3 x 12",
@@ -16,7 +16,7 @@
             }
         },
         {
-            "exercise_id": "ex2",
+            "exercise_id": "2a931981-32e5-4c9e-a714-e927abd050b6",
             "order": 2,
             "Equipment": "10kg Barbell",
             "Sets_x_Reps": "3 x 12",

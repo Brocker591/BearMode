@@ -1,0 +1,64 @@
+import uuid
+
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.infrastructure.database import Base
+
+
+class TrainingPlan(Base):
+    __tablename__ = "training_plans"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    profile_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False
+    )
+
+    # Relationships
+    exercises: Mapped[list["TrainingExercise"]] = relationship(
+        "TrainingExercise",
+        back_populates="training_plan",
+        cascade="all, delete-orphan",
+        lazy="selectin",  # Eager load exercises often
+    )
+
+
+class TrainingExercise(Base):
+    __tablename__ = "training_exercises"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    training_plan_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("training_plans.id"), nullable=False
+    )
+    order: Mapped[int] = mapped_column(Integer, nullable=False)
+    equipment: Mapped[str] = mapped_column(String(255), nullable=True)
+    sets_x_reps: Mapped[str] = mapped_column(String(255), nullable=True)
+    break_time_seconds: Mapped[int] = mapped_column(Integer, nullable=True)
+    
+    training_exercise_item_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("training_exercise_items.id"), nullable=False
+    )
+
+    # Relationships
+    training_plan: Mapped["TrainingPlan"] = relationship(
+        "TrainingPlan", back_populates="exercises"
+    )
+    training_exercise_item: Mapped["TrainingExerciseItem"] = relationship(
+        "TrainingExerciseItem", lazy="selectin"
+    )
+
+# Avoid circular imports by string references or importing inside methods if needed
+# But for relationships "TrainingExerciseItem" needs to be known or effectively mapped.
+# Given `app.features.training_exercise_items.models` exists, SQLAlchemy logic usually handles string refs 
+# if the class is in the Base registry.
+from app.features.training_exercise_items.models import TrainingExerciseItem  # noqa: F401

@@ -4,16 +4,22 @@ import { ManageProfileComponent } from './pages/manage-profile/manage-profile.co
 import { StartScreenComponent } from './pages/start-screen/start-screen.component';
 import { TrainingExerciseItemComponent } from './pages/training-exercise-item/training-exercise-item';
 import { TrainingPlanPageComponent } from './pages/training-plan-page/training-plan-page.component';
+import { SelectProfileComponent } from './pages/select-profile/select-profile.component';
+import { profileGuard } from './guards/profile.guard';
 
 export const routes: Routes = [
+  {
+    path: 'select-profile',
+    component: SelectProfileComponent // No layout or different layout? Assuming standalone page for now or with layout?
+  },
   {
     path: '',
     component: AppLayoutComponent,
     children: [
-      { path: '', component: StartScreenComponent },
-      { path: 'manage-profile', component: ManageProfileComponent },
-      { path: 'training-exercise-item', component: TrainingExerciseItemComponent },
-      { path: 'training-plans', component: TrainingPlanPageComponent }
+      { path: '', component: StartScreenComponent, canActivate: [profileGuard] },
+      { path: 'manage-profile', component: ManageProfileComponent }, // Allowed without guard
+      { path: 'training-exercise-item', component: TrainingExerciseItemComponent, canActivate: [profileGuard] },
+      { path: 'training-plans', component: TrainingPlanPageComponent, canActivate: [profileGuard] }
     ]
   },
   { path: '**', redirectTo: '' }

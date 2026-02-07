@@ -1,4 +1,5 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -45,11 +46,17 @@ export class ManageProfileComponent implements OnInit {
   constructor(
     private readonly profileService: ProfileService,
     private readonly snackBar: MatSnackBar,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.loadProfiles();
+    this.route.queryParams.subscribe(params => {
+      if (params['create'] === 'true') {
+        this.openCreate();
+      }
+    });
   }
 
   loadProfiles(): void {
@@ -97,11 +104,17 @@ export class ManageProfileComponent implements OnInit {
       : this.profileService.create({ name });
 
     sub.subscribe({
-      next: () => {
+      next: (profile) => {
         this.formSaving.set(false);
         this.cancelForm();
         this.loadProfiles();
-        this.snackBar.open(state.id ? 'Profil aktualisiert.' : 'Profil erstellt.', 'OK', {
+
+        // Auto-select if no profile is currently selected
+        if (!this.profileService.selectedProfile()) {
+          this.profileService.selectProfile(profile);
+        }
+
+        this.snackBar.open(state.id ? 'Profil aktualisiert.' : 'Profil verwendet und erstellt.', 'OK', {
           duration: 3000
         });
       },

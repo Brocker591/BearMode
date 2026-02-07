@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import type { Profile, ProfileCreate, ProfileUpdate } from '../models/profile';
 
@@ -8,7 +8,11 @@ import type { Profile, ProfileCreate, ProfileUpdate } from '../models/profile';
 export class ProfileService {
   private readonly baseUrl = `${environment.apiUrl}/profiles`;
 
-  constructor(private readonly http: HttpClient) {}
+  readonly selectedProfile = signal<Profile | null>(null);
+
+  constructor(private readonly http: HttpClient) {
+    this.loadSelectedProfile();
+  }
 
   getAll(): Observable<Profile[]> {
     return this.http.get<Profile[]>(this.baseUrl).pipe(catchError(this.handleError));
@@ -27,7 +31,33 @@ export class ProfileService {
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(catchError(this.handleError));
+    return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
+      tap(() => {
+        const current = this.selectedProfile();
+        if (current && current.id === id) {
+          this.selectedProfile.set(null);
+          localStorage.removeItem('selectedProfile');
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  selectProfile(profile: Profile): void {
+    this.selectedProfile.set(profile);
+    localStorage.setItem('selectedProfile', JSON.stringify(profile));
+  }
+
+  private loadSelectedProfile(): void {
+    const savedProfile = localStorage.getItem('selectedProfile');
+    if (savedProfile) {
+      try {
+        this.selectedProfile.set(JSON.parse(savedProfile));
+      } catch (e) {
+        console.error('Failed to parse selected profile from local storage', e);
+        localStorage.removeItem('selectedProfile');
+      }
+    }
   }
 
   private handleError(error: { status?: number; error?: { detail?: string }; message?: string }) {

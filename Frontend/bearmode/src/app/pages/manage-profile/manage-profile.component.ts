@@ -13,6 +13,8 @@ import type { Profile } from '../../models/profile';
 
 import { MatIconModule } from '@angular/material/icon';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -24,7 +26,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './manage-profile.component.html',
   styleUrl: './manage-profile.component.css'

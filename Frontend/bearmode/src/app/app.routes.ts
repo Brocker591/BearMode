@@ -17,7 +17,7 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: '', component: StartScreenComponent, canActivate: [profileGuard] },
-      { path: 'manage-profile', component: ManageProfileComponent }, // Allowed without guard
+      { path: 'manage-profile', component: ManageProfileComponent, canActivate: [profileGuard] },
       { path: 'training-exercise-item', component: TrainingExerciseItemComponent, canActivate: [profileGuard] },
       { path: 'training-plans', component: TrainingPlanPageComponent, canActivate: [profileGuard] }
     ]

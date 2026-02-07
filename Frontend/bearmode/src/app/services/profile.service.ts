@@ -11,7 +11,7 @@ export class ProfileService {
   readonly selectedProfile = signal<Profile | null>(null);
 
   constructor(private readonly http: HttpClient) {
-    this.loadSelectedProfile();
+    // Intentionally not loading profile to force selection on start
   }
 
   getAll(): Observable<Profile[]> {

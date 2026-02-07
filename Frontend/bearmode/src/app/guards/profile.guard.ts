@@ -12,9 +12,17 @@ export const profileGuard: CanActivateFn = (route, state) => {
     }
 
     const targetUrl = state.url;
-    // Allow access to select-profile and manage-profile even without a selected profile
-    if (targetUrl.includes('select-profile') || targetUrl.includes('manage-profile')) {
+    // Allow access to select-profile
+    if (targetUrl.includes('select-profile')) {
         return true;
+    }
+
+    // Allow access to manage-profile ONLY if creating a new profile
+    if (targetUrl.includes('manage-profile')) {
+        const urlTree = router.parseUrl(targetUrl);
+        if (urlTree.queryParams['create'] === 'true') {
+            return true;
+        }
     }
 
     // Otherwise redirect to select-profile

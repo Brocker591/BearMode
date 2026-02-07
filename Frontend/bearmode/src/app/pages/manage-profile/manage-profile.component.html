@@ -5,11 +5,6 @@
         <h1 class="page-title">Profile verwalten</h1>
         <p class="page-subtitle">Bearbeiten oder löschen Sie Ihre Profile</p>
       </div>
-      @if (!formState()) {
-      <button mat-raised-button class="btn-create" (click)="openCreate()">
-        <mat-icon>add</mat-icon> Neues Profil
-      </button>
-      }
     </div>
 
     @if (errorMessage()) {
@@ -64,9 +59,13 @@
       </div>
       }
 
-      @if (dataSource.data.length === 0) {
-      <div class="no-profiles">
-        <p>Noch keine Profile vorhanden.</p>
+      <!-- Create New Profile Card -->
+      @if (!formState()) {
+      <div class="profile-card create-card" (click)="openCreate()" tabindex="0" (keydown.enter)="openCreate()">
+        <div class="avatar-circle create-circle">
+          <mat-icon>add</mat-icon>
+        </div>
+        <span class="profile-name">Neu erstellen</span>
       </div>
       }
     </div>

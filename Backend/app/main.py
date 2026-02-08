@@ -40,4 +40,5 @@ app.include_router(health_router, prefix="/health", tags=["health"])
 app.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
 app.include_router(training_exercise_items_router,
                    prefix="/training-exercise-items", tags=["training-exercise-items"])
-app.include_router(training_plan_router, prefix="/training-plans", tags=["training-plans"])
+app.include_router(training_plan_router,
+                   prefix="/training-plans", tags=["training-plans"])

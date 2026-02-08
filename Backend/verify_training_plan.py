@@ -36,7 +36,8 @@ async def main():
                 {
                     "order": 1,
                     "Equipment": "Dumbbells",
-                    "Sets_x_Reps": "3x12",
+                    "Sets": 3,
+                    "Reps": 12,
                     "break_time_seconds": 60,
                     "training_exercise_item_id": item_id
                 }

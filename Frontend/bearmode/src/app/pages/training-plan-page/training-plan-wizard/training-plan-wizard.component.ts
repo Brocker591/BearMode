@@ -18,7 +18,7 @@ import { TrainingExerciseItemService } from '../../../services/training-exercise
 
 import type { Profile } from '../../../models/profile';
 import type { TrainingExerciseItem } from '../../../models/training-exercise-item';
-import type { TrainingPlanCreate, TrainingExercise, TrainingPlan } from '../../../models/training-plan';
+import type { TrainingPlanCreate, TrainingExercise, TrainingPlan, TrainingExerciseCreate } from '../../../models/training-plan';
 
 @Component({
     selector: 'app-training-plan-wizard',
@@ -137,8 +137,9 @@ export class TrainingPlanWizardComponent implements OnInit {
 
     addExercise(data?: TrainingExercise): void {
         const exerciseGroup = this.fb.group({
-            training_exercise_item_id: [data?.training_exercise_item_id || '', Validators.required],
-            sets_x_reps: [data?.sets_x_reps || ''],
+            training_exercise_item_id: [data?.training_exercise_item?.item_id || '', Validators.required],
+            sets: [data?.sets || null],
+            reps: [data?.reps || null],
             equipment: [data?.equipment || ''],
             break_time_seconds: [data?.break_time_seconds || 0],
             order: [data ? data.order : this.exercisesArray.length + 1]
@@ -167,10 +168,11 @@ export class TrainingPlanWizardComponent implements OnInit {
         const exercises = this.exercisesForm.value.exercises;
 
         // Map form exercises to model
-        const exercisesPayload: TrainingExercise[] = exercises.map((ex: any, index: number) => ({
+        const exercisesPayload: TrainingExerciseCreate[] = exercises.map((ex: any, index: number) => ({
             order: index + 1,
             equipment: ex.equipment,
-            sets_x_reps: ex.sets_x_reps,
+            sets: ex.sets ? Number(ex.sets) : null,
+            reps: ex.reps ? Number(ex.reps) : null,
             break_time_seconds: ex.break_time_seconds,
             training_exercise_item_id: ex.training_exercise_item_id
         }));

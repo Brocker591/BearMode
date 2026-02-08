@@ -44,8 +44,13 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="exercise-input">
-                            <mat-label>Sätze x Wdh.</mat-label>
-                            <input matInput formControlName="sets_x_reps" placeholder="3x10">
+                            <mat-label>Sätze</mat-label>
+                            <input matInput type="number" formControlName="sets" placeholder="3">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="exercise-input">
+                            <mat-label>Wdh.</mat-label>
+                            <input matInput type="number" formControlName="reps" placeholder="10">
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="exercise-input">
@@ -89,7 +94,7 @@
                         <tr>
                             <th>#</th>
                             <th>Übung</th>
-                            <th>Sätze/Wdh.</th>
+                            <th>Sätze x Wdh.</th>
                             <th>Pause</th>
                             <th>Equipment</th>
                         </tr>
@@ -99,7 +104,7 @@
                         <tr>
                             <td>{{ i + 1 }}</td>
                             <td>{{ getTrainingExerciseItemName(ex.training_exercise_item_id) }}</td>
-                            <td>{{ ex.sets_x_reps || '-' }}</td>
+                            <td>{{ ex.sets || '-' }} x {{ ex.reps || '-' }}</td>
                             <td>{{ ex.break_time_seconds ? ex.break_time_seconds + 's' : '-' }}</td>
                             <td>{{ ex.equipment || '-' }}</td>
                         </tr>

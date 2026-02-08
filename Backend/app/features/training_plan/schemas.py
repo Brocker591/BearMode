@@ -14,7 +14,8 @@ class TrainingExerciseItemLink(BaseModel):
 class TrainingExerciseBase(BaseModel):
     order: int
     equipment: str | None = Field(None, alias="Equipment")
-    sets_x_reps: str | None = Field(None, alias="Sets_x_Reps")
+    sets: int | None = Field(None, alias="Sets")
+    reps: int | None = Field(None, alias="Reps")
     break_time_seconds: int | None = None
 
 

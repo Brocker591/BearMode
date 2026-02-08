@@ -23,7 +23,8 @@ async def create(session: AsyncSession, name: str, profile_id: UUID, exercises_d
             # training_plan_id will be set by append
             order=exercise_dto.order,
             equipment=exercise_dto.equipment,
-            sets_x_reps=exercise_dto.sets_x_reps,
+            sets=exercise_dto.sets,
+            reps=exercise_dto.reps,
             break_time_seconds=exercise_dto.break_time_seconds,
             training_exercise_item_id=item_id
         )
@@ -86,7 +87,8 @@ async def update(session: AsyncSession, plan_id: UUID, name: str | None, profile
                 training_plan_id=plan.id,
                 order=exercise_dto.order,
                 equipment=exercise_dto.equipment,
-                sets_x_reps=exercise_dto.sets_x_reps,
+                sets=exercise_dto.sets,
+                reps=exercise_dto.reps,
                 break_time_seconds=exercise_dto.break_time_seconds,
                 training_exercise_item_id=item_id
             )

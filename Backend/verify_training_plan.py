@@ -3,7 +3,8 @@ import httpx
 import uuid
 import sys
 
-BASE_URL = "http://localhost:8000"
+BASE_URL = "http://localhost:8002"
+
 
 async def main():
     async with httpx.AsyncClient(base_url=BASE_URL, timeout=30.0) as client:
@@ -46,12 +47,13 @@ async def main():
         print(f"Creating training plan: {plan_data}")
         resp = await client.post("/training-plans", json=plan_data)
         if resp.status_code != 201:
-             print(f"Failed to create plan: {resp.text}")
-             sys.exit(1)
+            print(f"Failed to create plan: {resp.text}")
+            sys.exit(1)
         plan = resp.json()
         plan_id = plan["id"]
         print(f"Plan created: {plan}")
-        assert len(plan["training_exercises"]) == 1, f"Expected 1 exercise, got {len(plan['training_exercises'])}"
+        assert len(plan["training_exercises"]
+                   ) == 1, f"Expected 1 exercise, got {len(plan['training_exercises'])}"
 
         # 4. Get Plan
         print(f"Getting plan {plan_id}")
@@ -63,7 +65,7 @@ async def main():
         print(f"Updating plan {plan_id}")
         update_data = {
             "name": "Updated Plan Name",
-            "training_exercises": [] # Clear exercises
+            "training_exercises": []  # Clear exercises
         }
         resp = await client.put(f"/training-plans/{plan_id}", json=update_data)
         assert resp.status_code == 200
@@ -71,12 +73,12 @@ async def main():
         print(f"Updated plan: {updated_plan}")
         assert updated_plan["name"] == "Updated Plan Name"
         assert len(updated_plan["training_exercises"]) == 0
-        
+
         # 6. Delete Plan
         print(f"Deleting plan {plan_id}")
         resp = await client.delete(f"/training-plans/{plan_id}")
         assert resp.status_code == 204
-        
+
         # Verify deletion
         resp = await client.get(f"/training-plans/{plan_id}")
         assert resp.status_code == 404

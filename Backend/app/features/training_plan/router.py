@@ -8,7 +8,7 @@ from app.features.training_plan.schemas import (
     TrainingPlanUpdate,
     TrainingPlanResponse,
 )
-from app.features.training_plan import repository
+from app.shared.repository import TrainingPlanRepository
 from app.infrastructure.database import get_session
 
 router = APIRouter()
@@ -19,7 +19,7 @@ async def create_training_plan(
     body: TrainingPlanCreate,
     session: AsyncSession = Depends(get_session)
 ) -> TrainingPlanResponse:
-    plan = await repository.create(
+    plan = await TrainingPlanRepository.create(
         session, 
         name=body.name, 
         profile_id=body.profile_id, 
@@ -32,7 +32,7 @@ async def create_training_plan(
 async def list_training_plans(
     session: AsyncSession = Depends(get_session)
 ) -> list[TrainingPlanResponse]:
-    plans = await repository.get_all(session)
+    plans = await TrainingPlanRepository.get_all(session)
     return [TrainingPlanResponse.model_validate(p) for p in plans]
 
 
@@ -41,7 +41,7 @@ async def get_training_plan(
     plan_id: UUID, 
     session: AsyncSession = Depends(get_session)
 ) -> TrainingPlanResponse:
-    plan = await repository.get_by_id(session, plan_id)
+    plan = await TrainingPlanRepository.get_by_id(session, plan_id)
     if plan is None:
         raise HTTPException(status_code=404, detail="Training Plan not found")
     return TrainingPlanResponse.model_validate(plan)
@@ -53,7 +53,7 @@ async def update_training_plan(
     body: TrainingPlanUpdate, 
     session: AsyncSession = Depends(get_session)
 ) -> TrainingPlanResponse:
-    plan = await repository.update(
+    plan = await TrainingPlanRepository.update(
         session, 
         plan_id, 
         name=body.name, 
@@ -70,6 +70,6 @@ async def delete_training_plan(
     plan_id: UUID, 
     session: AsyncSession = Depends(get_session)
 ) -> None:
-    deleted = await repository.delete(session, plan_id)
+    deleted = await TrainingPlanRepository.delete(session, plan_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Training Plan not found")

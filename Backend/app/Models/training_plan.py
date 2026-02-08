@@ -19,6 +19,8 @@ class TrainingPlan(Base):
     profile_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False
     )
+    
+    profile: Mapped["Profile"] = relationship("Profile", back_populates="training_plans")
 
     # Relationships
     exercises: Mapped[list["TrainingExercise"]] = relationship(
@@ -62,4 +64,5 @@ class TrainingExercise(Base):
 # But for relationships "TrainingExerciseItem" needs to be known or effectively mapped.
 # Given `app.features.training_exercise_items.models` exists, SQLAlchemy logic usually handles string refs 
 # if the class is in the Base registry.
-from app.features.training_exercise_items.models import TrainingExerciseItem  # noqa: F401
+from app.Models.training_exercise_item import TrainingExerciseItem  # noqa: F401
+from app.Models.profile import Profile  # noqa: F401

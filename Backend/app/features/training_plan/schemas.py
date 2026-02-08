@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class TrainingExerciseItemLink(BaseModel):
@@ -23,6 +23,14 @@ class TrainingExerciseCreate(TrainingExerciseBase):
     training_exercise_item: TrainingExerciseItemLink | None = None
     # Alternatively accept ID directly if the item already exists
     training_exercise_item_id: UUID | None = None
+
+    @field_validator('sets', 'reps', mode='before')
+    @classmethod
+    def set_default_to_one_if_none_or_invalid(cls, v: int | None) -> int:
+        if v is None or v < 1:
+            return 1
+        return v
+
 
     # Helper validator or logic in service/router might be needed 
     # if the user passes the nested object but we only need the ID.
@@ -53,6 +61,6 @@ class TrainingPlanResponse(BaseModel):
     id: UUID
     name: str
     profile_id: UUID
-    training_exercises: list[TrainingExerciseResponse] = []
+    training_exercises: list[TrainingExerciseResponse] = Field([], validation_alias="exercises")
 
     model_config = ConfigDict(from_attributes=True)

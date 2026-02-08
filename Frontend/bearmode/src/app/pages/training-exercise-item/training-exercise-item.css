@@ -1,6 +1,6 @@
 :host {
     display: block;
-    font-family: 'Inter', sans-serif;
+    /* font-family: 'Inter', sans-serif; -- Inherited from global */
     --primary: #2563eb;
     --primary-hover: #1d4ed8;
     --danger: #dc2626;
@@ -33,13 +33,7 @@
     flex-wrap: wrap;
 }
 
-.page-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: var(--text);
-    margin: 0;
-    letter-spacing: -0.025em;
-}
+/* .page-title moved to global styles.css */
 
 /* Messages */
 .error-banner {
@@ -93,9 +87,11 @@
 .table-container {
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 20px;
+    /* Increased radius for card look */
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    /* Stronger shadow for card effect */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .loading-state,
@@ -174,4 +170,16 @@
 /* Fallback for legacy material if MDC is not used */
 input[matInput] {
     color: var(--text);
+}
+
+.url-link {
+    color: var(--primary);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.url-link:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
 }

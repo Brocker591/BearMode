@@ -1,6 +1,6 @@
 <div class="page-container p-6">
     <div class="page-header">
-        <h2 class="page-title">Manage Training Exercises</h2>
+        <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight m-0">Trainingsübungen verwalten</h2>
         @if (!formState()) {
         <button mat-flat-button color="primary" class="btn-create" (click)="openCreate()">Neue Übung</button>
         }
@@ -50,7 +50,14 @@
             <!-- Video URL Column -->
             <ng-container matColumnDef="video_url">
                 <th mat-header-cell *matHeaderCellDef>Video URL</th>
-                <td mat-cell *matCellDef="let row">{{ row.video_url || '-' }}</td>
+                <td mat-cell *matCellDef="let row">
+                    @if (row.video_url) {
+                    <a [href]="row.video_url" target="_blank" rel="noopener noreferrer" class="url-link">{{
+                        row.video_url }}</a>
+                    } @else {
+                    -
+                    }
+                </td>
             </ng-container>
 
             <!-- Actions Column -->

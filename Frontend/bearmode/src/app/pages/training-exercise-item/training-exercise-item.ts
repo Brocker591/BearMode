@@ -88,12 +88,22 @@ export class TrainingExerciseItemComponent implements OnInit {
 
   saveForm(): void {
     const description = this.formDescriptionValue.trim();
-    const video_url = this.formVideoUrlValue.trim() || null;
+    let video_url = this.formVideoUrlValue.trim() || null;
 
     if (!description) {
       this.snackBar.open('Bitte eine Beschreibung eingeben.', 'OK', { duration: 3000 });
       return;
     }
+
+    if (video_url) {
+      try {
+        new URL(video_url);
+      } catch (_) {
+        this.snackBar.open('Bitte eine gültige Video-URL eingeben.', 'OK', { duration: 3000 });
+        return;
+      }
+    }
+
     const state = this.formState();
     if (!state) return;
 

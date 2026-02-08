@@ -1,6 +1,5 @@
 :host {
   display: block;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   height: 100%;
 }
 
@@ -49,16 +48,8 @@
   flex: 1;
 }
 
-.page-title {
-  margin: 0;
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(45deg, #00bfa5, #0091ea);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -1px;
-}
+/* .page-title moved to global styles.css */
+
 
 .page-subtitle {
   margin: 0.5rem 0 0;

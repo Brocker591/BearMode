@@ -59,8 +59,8 @@ import { MatIconModule } from '@angular/material/icon';
     .page-container {
       min-height: 100vh;
       width: 100%;
-      /* Vibrant glowing mint gradient */
-      background: linear-gradient(135deg, #00F5A0 0%, #00D9F5 100%);
+      /* Background moved to global styles.css */
+      /* background: linear-gradient(135deg, #00F5A0 0%, #00D9F5 100%); */
       display: flex;
       justify-content: center;
       align-items: center;

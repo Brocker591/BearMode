@@ -1,9 +1,8 @@
 <div class="page-container p-6">
   <div class="page-header">
     <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight m-0">Trainingspläne verwalten</h2>
-    @if (!formState()) {
+
     <button mat-flat-button color="primary" class="btn-create" (click)="openCreate()">Neuer Plan</button>
-    }
   </div>
 
   @if (errorMessage()) {
@@ -12,33 +11,6 @@
   </div>
   }
 
-  @if (formState(); as state) {
-  <div class="profile-form-card">
-    <h3 class="form-title">{{ isEditMode() ? 'Plan bearbeiten' : 'Neuen Plan erstellen' }}</h3>
-    <div class="form-controls">
-      <mat-form-field appearance="outline" class="form-field-name">
-        <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="formNameValue" placeholder="Plan Name" [disabled]="formSaving()" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="form-field-name">
-        <mat-label>Profil</mat-label>
-        <mat-select [(ngModel)]="formProfileIdValue" [disabled]="formSaving()">
-          @for (p of profiles(); track p.id) {
-          <mat-option [value]="p.id">{{ p.name }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <div class="form-actions">
-        <button mat-button (click)="cancelForm()" [disabled]="formSaving()">Abbrechen</button>
-        <button mat-flat-button color="primary" (click)="saveForm()" [disabled]="formSaving()">
-          {{ formSaving() ? 'Speichern…' : 'Speichern' }}
-        </button>
-      </div>
-    </div>
-  </div>
-  }
 
   <div class="table-container">
     @if (loading()) {

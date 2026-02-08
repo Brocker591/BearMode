@@ -1,0 +1,124 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Trainingsplan bearbeiten' : 'Neuen Trainingsplan erstellen' }}</h2>
+<mat-dialog-content>
+    <mat-stepper [linear]="true" #stepper>
+        <!-- Step 1: Plan Details -->
+        <mat-step [stepControl]="planDetailsForm">
+            <ng-template matStepLabel>Beschreibung</ng-template>
+            <form [formGroup]="planDetailsForm" class="step-content">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Plan Name</mat-label>
+                    <input matInput formControlName="name" placeholder="z.B. Ganzkörpertraining A" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Profil</mat-label>
+                    <mat-select formControlName="profile_id" required>
+                        @for (profile of profiles(); track profile.id) {
+                        <mat-option [value]="profile.id">{{ profile.name }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="step-actions">
+                    <button mat-button matStepperNext>Weiter</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!-- Step 2: Exercises Grid -->
+        <mat-step [stepControl]="exercisesForm">
+            <ng-template matStepLabel>Übungen</ng-template>
+            <div [formGroup]="exercisesForm" class="step-content">
+                <div formArrayName="exercises" class="exercises-list">
+                    @for (exercise of exercisesArray.controls; track exercise; let i = $index) {
+                    <div [formGroupName]="i" class="exercise-row">
+                        <div class="exercise-index">{{ i + 1 }}.</div>
+
+                        <mat-form-field appearance="outline" class="exercise-select">
+                            <mat-label>Übung</mat-label>
+                            <mat-select formControlName="training_exercise_item_id" required>
+                                @for (item of exerciseItems(); track item.id) {
+                                <mat-option [value]="item.id">{{ item.description }}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="exercise-input">
+                            <mat-label>Sätze x Wdh.</mat-label>
+                            <input matInput formControlName="sets_x_reps" placeholder="3x10">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="exercise-input">
+                            <mat-label>Pause (sek)</mat-label>
+                            <input matInput type="number" formControlName="break_time_seconds" placeholder="60">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="exercise-input">
+                            <mat-label>Equipment</mat-label>
+                            <input matInput formControlName="equipment" placeholder="Hantel">
+                        </mat-form-field>
+
+                        <button mat-icon-button color="warn" (click)="removeExercise(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    }
+
+                    <button mat-stroked-button color="primary" (click)="addExercise()">
+                        <mat-icon>add</mat-icon> Übung hinzufügen
+                    </button>
+                </div>
+
+                <div class="step-actions">
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button matStepperNext>Weiter</button>
+                </div>
+            </div>
+        </mat-step>
+
+        <!-- Step 3: Overview -->
+        <mat-step>
+            <ng-template matStepLabel>Übersicht</ng-template>
+            <div class="step-content overview-content">
+                <h3>Zusammenfassung</h3>
+                <p><strong>Name:</strong> {{ planDetailsForm.get('name')?.value }}</p>
+
+                <h4>Übungen:</h4>
+                <table class="overview-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Übung</th>
+                            <th>Sätze/Wdh.</th>
+                            <th>Pause</th>
+                            <th>Equipment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (ex of overviewExercises(); track $index; let i = $index) {
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ getTrainingExerciseItemName(ex.training_exercise_item_id) }}</td>
+                            <td>{{ ex.sets_x_reps || '-' }}</td>
+                            <td>{{ ex.break_time_seconds ? ex.break_time_seconds + 's' : '-' }}</td>
+                            <td>{{ ex.equipment || '-' }}</td>
+                        </tr>
+                        }
+                        @if (overviewExercises().length === 0) {
+                        <tr>
+                            <td colspan="5" class="no-data">Keine Übungen hinzugefügt.</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="step-actions">
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-flat-button color="primary" (click)="submitPlan()" [disabled]="isSaving()">
+                        {{ isSaving() ? 'Speichern...' : (isEditMode ? 'Plan aktualisieren' : 'Plan erstellen') }}
+                    </button>
+                </div>
+            </div>
+        </mat-step>
+    </mat-stepper>
+</mat-dialog-content>

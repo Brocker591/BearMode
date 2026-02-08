@@ -3,7 +3,7 @@ export interface TrainingExercise {
     equipment?: string | null;
     sets_x_reps?: string | null;
     break_time_seconds?: number | null;
-    // We might need more details here later, for now sticking to what's in router/schemas
+    training_exercise_item_id: string; // Required to link to the specific exercise item
 }
 
 export interface TrainingPlan {

@@ -1,0 +1,93 @@
+.step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+    min-width: 100%;
+    /* Use full width of dialog */
+    height: 100%;
+    /* Use full height */
+}
+
+.exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+    /* Let it grow to fill space */
+    overflow-y: auto;
+    padding-right: 8px;
+    max-height: 60vh;
+    /* Approximate max height to keep within dialog */
+}
+
+
+
+.exercise-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background-color: #f9fafb;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.exercise-index {
+    font-weight: bold;
+    color: #6b7280;
+    width: 24px;
+}
+
+.exercise-select {
+    flex: 2;
+}
+
+.exercise-input {
+    flex: 1;
+}
+
+/* Adjust mat-form-field inside row to remove extra padding/margin if needed */
+.exercise-row mat-form-field {
+    font-size: 14px;
+}
+
+/* Overview Table */
+.overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.overview-table th,
+.overview-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.overview-table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+}
+
+.no-data {
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+    padding: 24px;
+}
+
+h3,
+h4 {
+    margin: 0;
+    margin-bottom: 8px;
+    color: #111827;
+}
+
+p {
+    margin: 0;
+    margin-bottom: 16px;
+    color: #4b5563;
+}

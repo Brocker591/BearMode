@@ -1,4 +1,185 @@
-/* Add any specific styles here if tailwind isn't enough */
-.container {
-    max-width: 1200px;
+:host {
+    display: block;
+    /* font-family: 'Inter', sans-serif; -- Inherited from global */
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --surface: #ffffff;
+    --background: #f8fafc;
+    --text: #0f172a;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+}
+
+/* Removed dark mode support to enforce consistent white design as requested */
+
+.page-container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* .page-title moved to global styles.css */
+
+/* Messages */
+.error-banner {
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+/* Form Card */
+.profile-form-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-title {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+}
+
+.form-controls {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-field-name {
+    flex: 1;
+    min-width: 250px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Table Container */
+.table-container {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    /* Increased radius for card look */
+    overflow: hidden;
+    /* Stronger shadow for card effect */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.loading-state,
+.no-data-cell {
+    padding: 3rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Table Styles */
+.profiles-table {
+    width: 100%;
+}
+
+.profiles-table th.mat-header-cell {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background-color: var(--background);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.profiles-table td.mat-cell {
+    padding: 1rem 1.5rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+}
+
+.profiles-table tr.mat-row:last-child td {
+    border-bottom: none;
+}
+
+.profiles-table tr.mat-row:hover {
+    background-color: var(--background);
+}
+
+.cell-name {
+    font-weight: 500;
+}
+
+.header-actions,
+.cell-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.cell-actions {
+    padding-right: 0.5rem !important;
+}
+
+/* Button overrides for cleaner look if needed */
+.cell-actions button {
+    margin-left: 0.5rem;
+}
+
+/* Form Input Overrides for Contrast */
+:host ::ng-deep .mat-mdc-form-field-input-control {
+    color: var(--text) !important;
+    caret-color: var(--text);
+    /* Ensure cursor is visible */
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
+    color: var(--text-secondary);
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+    color: var(--primary);
+}
+
+/* Fallback for legacy material if MDC is not used */
+input[matInput] {
+    color: var(--text);
+}
+
+.url-link {
+    color: var(--primary);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.url-link:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
 }

@@ -55,8 +55,6 @@ async def create(session: AsyncSession, training_plan: TrainingPlanCreate) -> Tr
     )
     return result.scalar_one()
 
-# Noch zu überarbeiten
-
 
 async def get_by_id(session: AsyncSession, plan_id: UUID) -> TrainingPlan | None:
     result = await session.execute(
@@ -68,12 +66,13 @@ async def get_by_id(session: AsyncSession, plan_id: UUID) -> TrainingPlan | None
 
 
 async def get_all(session: AsyncSession) -> list[TrainingPlan]:
-    result = await session.execute(
+    all_plans = await session.execute(
         select(TrainingPlan)
         .options(selectinload(TrainingPlan.exercises).selectinload(TrainingExercise.training_exercise_item))
         .order_by(TrainingPlan.name)
     )
-    return list(result.scalars().all())
+    result = list(all_plans.scalars().all())
+    return result
 
 
 async def update(session: AsyncSession, plan_id: UUID, name: str | None, profile_id: UUID | None, exercises_data: list | None) -> TrainingPlan | None:
@@ -87,32 +86,33 @@ async def update(session: AsyncSession, plan_id: UUID, name: str | None, profile
         plan.profile_id = profile_id
 
     if exercises_data is not None:
-        # Replace exercises strategy: Delete existing and re-create
-        # Alternatively, we could diff them, but usually replacement is easier for whole-plan updates.
-        # Note: This deletes *TrainingExercise* rows, not the items.
-
-        # Remove old exercises
-        # We need to explicitly delete them if cascade doesn't handle it in memory or to be safe
-        # session.delete on the parent might not delete children if not configured,
-        # but here we are modifying the collection.
-
-        # Easiest way with SQLAlchemy ORM:
+        # Clear existing exercises
         plan.exercises.clear()
 
         for exercise_dto in exercises_data:
             # Determine item_id
             item_id = exercise_dto.training_exercise_item_id
-            if not item_id and exercise_dto.training_exercise_item:
-                item_id = exercise_dto.training_exercise_item.item_id
+
+            # Verify item exists
+            exercise_item_exists = (await session.execute(
+                select(TrainingExerciseItem)
+                .where(TrainingExerciseItem.id == item_id)
+            )).scalar_one_or_none()
+
+            if not exercise_item_exists:
+                raise ValueError(
+                    f"TrainingExerciseItem with id {item_id} does not exist")
 
             new_exercise = TrainingExercise(
+                id=uuid4(),  # Generate new ID for simplicity and avoidance of conflicts
                 training_plan_id=plan.id,
                 order=exercise_dto.order,
                 equipment=exercise_dto.equipment,
                 sets=exercise_dto.sets,
                 reps=exercise_dto.reps,
                 break_time_seconds=exercise_dto.break_time_seconds,
-                training_exercise_item_id=item_id
+                training_exercise_item_id=item_id,
+                training_exercise_item=exercise_item_exists
             )
             # We can append to the relationship
             plan.exercises.append(new_exercise)

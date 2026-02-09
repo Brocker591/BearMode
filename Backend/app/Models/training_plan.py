@@ -40,7 +40,7 @@ class TrainingExercise(Base):
     equipment: Mapped[str] = mapped_column(String(255), nullable=True)
     sets: Mapped[int] = mapped_column(Integer, nullable=False)
     reps: Mapped[int] = mapped_column(Integer, nullable=False)
-    break_time_seconds: Mapped[int] = mapped_column(Integer, nullable=True)
+    break_time_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
 
     training_exercise_item_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("training_exercise_items.id"), nullable=False

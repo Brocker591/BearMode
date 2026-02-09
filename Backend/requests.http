@@ -95,6 +95,7 @@ DELETE {{host}}/training-exercise-items/{{deleteExerciseItemId}}
 # ----------------------------------------------------
 ### Create Training Plan
 # Need mainProfileId and mainExerciseItemId from previous steps to exist
+# @name createTrainingPlan
 POST {{host}}/training-plans
 Content-Type: application/json
 
@@ -112,7 +113,7 @@ Content-Type: application/json
         },
                 {
             "order": 2,
-            "training_exercise_item_id": "af0936a1-d117-44e2-a1b1-a4b74c338b62",
+            "training_exercise_item_id": "ff4a1038-4b0c-4e5c-bc91-c3a4f997bf05",
             "sets": 3,
             "reps": 5,
             "equipment": "Barbell",

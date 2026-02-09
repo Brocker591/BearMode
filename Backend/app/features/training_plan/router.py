@@ -21,7 +21,7 @@ router = APIRouter()
 @router.post("", response_model=TrainingPlanResponse, status_code=201)
 async def create_training_plan(body: TrainingPlanCreate, session: AsyncSession = Depends(get_session)) -> TrainingPlanResponse:
     try:
-        plan = await repository.create(session,training_plan=body)
+        plan = await repository.create(session, training_plan=body)
         return TrainingPlanResponse.model_validate(plan)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -29,15 +29,16 @@ async def create_training_plan(body: TrainingPlanCreate, session: AsyncSession =
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# hier noch überarbeiten
-
-
-@router.get("", response_model=list[TrainingPlanResponse])
-async def list_training_plans(
-    session: AsyncSession = Depends(get_session)
-) -> list[TrainingPlanResponse]:
+@router.get("", response_model=list[TrainingPlanResponse], status_code=200)
+async def list_training_plans(session: AsyncSession = Depends(get_session)) -> list[TrainingPlanResponse]:
     plans = await repository.get_all(session)
-    return [TrainingPlanResponse.model_validate(p) for p in plans]
+    response = []
+
+    for plan in plans:
+        plan_response = TrainingPlanResponse.model_validate(plan)
+        response.append(plan_response)
+
+    return response
 
 
 @router.get("/{plan_id}", response_model=TrainingPlanResponse)
@@ -57,13 +58,16 @@ async def update_training_plan(
     body: TrainingPlanUpdate,
     session: AsyncSession = Depends(get_session)
 ) -> TrainingPlanResponse:
-    plan = await repository.update(
-        session,
-        plan_id,
-        name=body.name,
-        profile_id=body.profile_id,
-        exercises_data=body.training_exercises
-    )
+    try:
+        plan = await repository.update(
+            session,
+            plan_id,
+            name=body.name,
+            profile_id=body.profile_id,
+            exercises_data=body.training_exercises
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     if plan is None:
         raise HTTPException(status_code=404, detail="Training Plan not found")
     return TrainingPlanResponse.model_validate(plan)

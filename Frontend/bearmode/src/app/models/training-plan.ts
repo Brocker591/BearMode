@@ -1,24 +1,22 @@
 export interface TrainingExercise {
-    id?: string; // Optional because it might not be present in all contexts or strictly needed on frontend if we use index
+    id?: string;
     order: number;
     equipment?: string | null;
     sets?: number | null;
     reps?: number | null;
     break_time_seconds?: number | null;
     training_exercise_item?: {
-        item_id?: string;
-        item_description?: string;
-        video_url?: string;
+        id: string;
+        description: string;
+        video_url?: string | null;
     } | null;
-    // For backward compatibility or ease of use in forms, we might still want to track the ID separately if needed, 
-    // but the backend response sends 'training_exercise_item'.
 }
 
 export interface TrainingPlan {
     id: string;
     name: string;
     profile_id: string;
-    training_exercises: TrainingExercise[];
+    exercises: TrainingExercise[];
 }
 
 export interface TrainingPlanCreate {
@@ -28,6 +26,7 @@ export interface TrainingPlanCreate {
 }
 
 export interface TrainingPlanUpdate {
+    id: string;
     name?: string;
     profile_id?: string;
     training_exercises?: TrainingExerciseCreate[];

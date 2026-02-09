@@ -34,7 +34,7 @@ class TrainingPlanUpdate(BaseModel):
     id: UUID
     name: str
     profile_id: UUID
-    training_exercises: list[TrainingExerciseUpdate]
+    training_exercises: list[TrainingExerciseCreate]
 
     model_config = ConfigDict(from_attributes=True)
 

@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.Models.training_exercise_item import TrainingExerciseItem
 from app.Models.training_plan import TrainingPlan, TrainingExercise
-from app.features.training_plan.schemas import TrainingPlanCreate
+from app.features.training_plan.schemas import TrainingPlanCreate, TrainingPlanUpdate
 
 
 async def create(session: AsyncSession, training_plan: TrainingPlanCreate) -> TrainingPlan:
@@ -75,47 +75,40 @@ async def get_all(session: AsyncSession) -> list[TrainingPlan]:
     return result
 
 
-async def update(session: AsyncSession, plan_id: UUID, name: str | None, profile_id: UUID | None, exercises_data: list | None) -> TrainingPlan | None:
-    plan = await get_by_id(session, plan_id)
+async def update(session: AsyncSession, training_plan: TrainingPlanUpdate) -> TrainingPlan | None:
+    plan = await get_by_id(session, training_plan.id)
     if plan is None:
         return None
 
-    if name is not None:
-        plan.name = name
-    if profile_id is not None:
-        plan.profile_id = profile_id
+    plan.name = training_plan.name
+    plan.profile_id = training_plan.profile_id
 
-    if exercises_data is not None:
-        # Clear existing exercises
-        plan.exercises.clear()
+    # Clear existing exercises
+    plan.exercises.clear()
 
-        for exercise_dto in exercises_data:
-            # Determine item_id
-            item_id = exercise_dto.training_exercise_item_id
+    for exercise_dto in training_plan.training_exercises:
 
-            # Verify item exists
-            exercise_item_exists = (await session.execute(
-                select(TrainingExerciseItem)
-                .where(TrainingExerciseItem.id == item_id)
-            )).scalar_one_or_none()
+        exercise_item_exists = (await session.execute(
+            select(TrainingExerciseItem)
+            .where(TrainingExerciseItem.id == exercise_dto.training_exercise_item_id)
+        )).scalar_one_or_none()
 
-            if not exercise_item_exists:
-                raise ValueError(
-                    f"TrainingExerciseItem with id {item_id} does not exist")
+        if not exercise_item_exists:
+            raise ValueError(
+                f"TrainingExerciseItem with id {exercise_dto.training_exercise_item_id} does not exist")
 
-            new_exercise = TrainingExercise(
-                id=uuid4(),  # Generate new ID for simplicity and avoidance of conflicts
-                training_plan_id=plan.id,
-                order=exercise_dto.order,
-                equipment=exercise_dto.equipment,
-                sets=exercise_dto.sets,
-                reps=exercise_dto.reps,
-                break_time_seconds=exercise_dto.break_time_seconds,
-                training_exercise_item_id=item_id,
-                training_exercise_item=exercise_item_exists
-            )
-            # We can append to the relationship
-            plan.exercises.append(new_exercise)
+        new_exercise = TrainingExercise(
+            id=uuid4(),
+            training_plan_id=plan.id,
+            order=exercise_dto.order,
+            equipment=exercise_dto.equipment,
+            sets=exercise_dto.sets,
+            reps=exercise_dto.reps,
+            break_time_seconds=exercise_dto.break_time_seconds,
+            training_exercise_item_id=exercise_dto.training_exercise_item_id,
+            training_exercise_item=exercise_item_exists
+        )
+        plan.exercises.append(new_exercise)
 
     await session.flush()
 
@@ -123,7 +116,7 @@ async def update(session: AsyncSession, plan_id: UUID, name: str | None, profile
     result = await session.execute(
         select(TrainingPlan)
         .options(selectinload(TrainingPlan.exercises).selectinload(TrainingExercise.training_exercise_item))
-        .where(TrainingPlan.id == plan_id)
+        .where(TrainingPlan.id == training_plan.id)
     )
     return result.scalar_one()
 

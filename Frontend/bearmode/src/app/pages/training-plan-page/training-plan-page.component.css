@@ -183,3 +183,42 @@ input[matInput] {
     text-decoration: underline;
     color: var(--primary-hover);
 }
+
+/* Master-Detail Styles */
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+    cursor: pointer;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.inner-table-container {
+    padding: 1rem 2rem 2rem 2rem;
+    width: 100%;
+    background-color: #fafafa;
+    border-bottom: 1px solid var(--border);
+}
+
+.inner-table th {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.inner-table td {
+    color: var(--text);
+}

@@ -46,20 +46,10 @@ async def get_training_plan(
     return TrainingPlanResponse.model_validate(plan)
 
 
-@router.put("/{plan_id}", response_model=TrainingPlanResponse)
-async def update_training_plan(
-    plan_id: UUID,
-    body: TrainingPlanUpdate,
-    session: AsyncSession = Depends(get_session)
-) -> TrainingPlanResponse:
+@router.put("", response_model=TrainingPlanResponse)
+async def update_training_plan(body: TrainingPlanUpdate, session: AsyncSession = Depends(get_session)) -> TrainingPlanResponse:
     try:
-        plan = await repository.update(
-            session,
-            plan_id,
-            name=body.name,
-            profile_id=body.profile_id,
-            exercises_data=body.training_exercises
-        )
+        plan = await repository.update(session, body)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     if plan is None:

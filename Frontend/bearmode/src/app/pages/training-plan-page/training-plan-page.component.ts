@@ -1,4 +1,3 @@
-
 import { Component, OnInit, signal, computed, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
@@ -10,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select'; // Need select for P
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
+import { trigger, state, style, transition, animate } from '@angular/animations'; // Import animations
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { TrainingPlanService } from '../../services/training-plan.service';
 import { ProfileService } from '../../services/profile.service'; // Need to load profiles
@@ -34,13 +34,22 @@ import { TrainingPlanWizardComponent } from './training-plan-wizard/training-pla
         MatIconModule
     ],
     templateUrl: './training-plan-page.component.html',
-    styleUrls: ['./training-plan-page.component.css']
+    styleUrls: ['./training-plan-page.component.css'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
 })
 export class TrainingPlanPageComponent implements OnInit {
     readonly dataSource = new MatTableDataSource<TrainingPlan>([]);
-    readonly displayedColumns: string[] = ['name', 'profile', 'exerciseCount', 'actions'];
+    // Removed 'exerciseCount' from displayedColumns
+    readonly displayedColumns: string[] = ['name', 'profile', 'actions'];
     readonly loading = signal(false);
     readonly errorMessage = signal<string | null>(null);
+    expandedElement: TrainingPlan | null = null;
 
     // Profile Data for Dropdown
     readonly profiles = signal<Profile[]>([]);
@@ -103,7 +112,9 @@ export class TrainingPlanPageComponent implements OnInit {
         });
     }
 
-    openEdit(plan: TrainingPlan): void {
+    openEdit(plan: TrainingPlan, event: Event): void {
+        // Prevent row expansion when clicking edit
+        event.stopPropagation();
         const dialogRef = this.dialog.open(TrainingPlanWizardComponent, {
             width: '90%',
             maxWidth: '1200px',
@@ -119,7 +130,9 @@ export class TrainingPlanPageComponent implements OnInit {
         });
     }
 
-    deletePlan(plan: TrainingPlan): void {
+    deletePlan(plan: TrainingPlan, event: Event): void {
+        // Prevent row expansion when clicking delete
+        event.stopPropagation();
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                 title: 'Plan löschen',

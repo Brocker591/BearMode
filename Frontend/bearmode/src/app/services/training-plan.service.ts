@@ -26,8 +26,8 @@ export class TrainingPlanService {
         return this.http.post<TrainingPlan>(this.baseUrl, body).pipe(catchError(this.handleError));
     }
 
-    update(id: string, body: TrainingPlanUpdate): Observable<TrainingPlan> {
-        return this.http.put<TrainingPlan>(`${this.baseUrl}/${id}`, body).pipe(catchError(this.handleError));
+    update(body: TrainingPlanUpdate): Observable<TrainingPlan> {
+        return this.http.put<TrainingPlan>(this.baseUrl, body).pipe(catchError(this.handleError));
     }
 
     delete(id: string): Observable<void> {

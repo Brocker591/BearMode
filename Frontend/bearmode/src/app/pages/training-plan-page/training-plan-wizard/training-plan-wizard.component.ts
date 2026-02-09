@@ -18,7 +18,7 @@ import { TrainingExerciseItemService } from '../../../services/training-exercise
 
 import type { Profile } from '../../../models/profile';
 import type { TrainingExerciseItem } from '../../../models/training-exercise-item';
-import type { TrainingPlanCreate, TrainingExercise, TrainingPlan, TrainingExerciseCreate } from '../../../models/training-plan';
+import type { TrainingPlanCreate, TrainingExercise, TrainingPlan, TrainingExerciseCreate, TrainingPlanUpdate } from '../../../models/training-plan';
 
 @Component({
     selector: 'app-training-plan-wizard',
@@ -116,16 +116,7 @@ export class TrainingPlanWizardComponent implements OnInit {
             profile_id: plan.profile_id
         });
 
-        // If global profile is active, it might override the plan's profile if we are strict.
-        // But for editing an existing plan, we should probably show what's in the DB unless the user changes it.
-        // The global profile logic above in ngOnInit handles the "defaulting" for new plans or locked context.
-        // If a global profile is selected, it disables the control. 
-        // We should ensure the plan's profile matches the global one if global is set, 
-        // OR warn/allow mismatch? For now, if global is set, we stick to it (as per requirement "soll das global verwendete Profil verwendet werden").
-        // But if the plan belongs to another profile, this might be weird. 
-        // Assuming the user is filtering by profile anyway.
-
-        const exercises = plan.training_exercises || [];
+        const exercises = plan.exercises || [];
         exercises.sort((a, b) => a.order - b.order).forEach(ex => {
             this.addExercise(ex);
         });
@@ -137,7 +128,7 @@ export class TrainingPlanWizardComponent implements OnInit {
 
     addExercise(data?: TrainingExercise): void {
         const exerciseGroup = this.fb.group({
-            training_exercise_item_id: [data?.training_exercise_item?.item_id || '', Validators.required],
+            training_exercise_item_id: [data?.training_exercise_item?.id || '', Validators.required],
             sets: [data?.sets || null],
             reps: [data?.reps || null],
             equipment: [data?.equipment || ''],
@@ -185,7 +176,11 @@ export class TrainingPlanWizardComponent implements OnInit {
 
         if (this.isEditMode && this.data) {
             // Update
-            this.trainingPlanService.update(this.data.id, planData).subscribe({
+            const updateData: TrainingPlanUpdate = {
+                ...planData,
+                id: this.data.id
+            };
+            this.trainingPlanService.update(updateData).subscribe({
                 next: () => {
                     this.isSaving.set(false);
                     this.snackBar.open('Trainingsplan erfolgreich aktualisiert!', 'OK', { duration: 3000 });

@@ -56,7 +56,7 @@ POST {{host}}/training-exercise-items
 Content-Type: application/json
 
 {
-    "description": "Squat",
+    "description": "Squat4",
     "video_url": "https://www.youtube.com/watch?v=aclHkVaku9U"
 }
 
@@ -105,19 +105,19 @@ Content-Type: application/json
     "training_exercises": [
         {
             "order": 1,
-            "training_exercise_item_id": "ff4a1038-4b0c-4e5c-bc91-c3a4f997bf05",
-            "sets": 3,
-            "reps": 5,
+            "training_exercise_item_id": "7f3c8a39-78b9-46f4-b505-391a504ce16b",
+            "sets": 2,
+            "reps": 10,
             "equipment": "Barbell",
             "break_time_seconds": 180
         },
                 {
             "order": 2,
-            "training_exercise_item_id": "ff4a1038-4b0c-4e5c-bc91-c3a4f997bf05",
-            "sets": 3,
-            "reps": 5,
+            "training_exercise_item_id": "4aa62a98-b6ba-4580-b80f-aab3c8a41b01",
+            "sets": 4,
+            "reps": 12,
             "equipment": "Barbell",
-            "break_time_seconds": 180
+            "break_time_seconds": 200
         }
     ]
 }

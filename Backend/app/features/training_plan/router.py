@@ -32,13 +32,7 @@ async def create_training_plan(body: TrainingPlanCreate, session: AsyncSession =
 @router.get("", response_model=list[TrainingPlanResponse], status_code=200)
 async def list_training_plans(session: AsyncSession = Depends(get_session)) -> list[TrainingPlanResponse]:
     plans = await repository.get_all(session)
-    response = []
-
-    for plan in plans:
-        plan_response = TrainingPlanResponse.model_validate(plan)
-        response.append(plan_response)
-
-    return response
+    return [TrainingPlanResponse.model_validate(plan) for plan in plans]
 
 
 @router.get("/{plan_id}", response_model=TrainingPlanResponse)

@@ -1,20 +1,18 @@
 import sys
 import os
+import asyncio
 
-# Add the Backend directory to sys.path
-sys.path.append(os.path.abspath("/home/brocker/dev/BearMode/Backend"))
+# Add the current directory to sys.path to make app module available
+sys.path.append(os.getcwd())
 
 try:
-    print("Attempting to import app.main...")
-    from app.main import app
-    print("Successfully imported app.main")
-    
-    print("Attempting to import routers...")
-    from app.features.profiles.router import router as profiles_router
-    from app.features.training_exercise_items.router import router as exercise_items_router
-    from app.features.training_plan.router import router as training_plan_router
-    print("Successfully imported routers")
-
+    from app.features.profiles.repository import ProfileRepository
+    from app.features.training_exercise_items.repository import TrainingExerciseItemRepository
+    from app.features.training_plan.repository import TrainingPlanRepository
+    print("Imports successful")
+except ImportError as e:
+    print(f"ImportError: {e}")
+    sys.exit(1)
 except Exception as e:
-    print(f"Error during import: {e}")
+    print(f"An error occurred: {e}")
     sys.exit(1)

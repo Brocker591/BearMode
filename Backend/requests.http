@@ -1,0 +1,162 @@
+@host = http://localhost:8000
+
+# ----------------------------------------------------
+# Health
+# ----------------------------------------------------
+### Health Check
+GET {{host}}/health
+
+# ----------------------------------------------------
+# Profiles
+# ----------------------------------------------------
+### Create Main Profile
+# @name createMainProfile
+POST {{host}}/profiles
+Content-Type: application/json
+
+{
+    "name": "Power Lifter"
+}
+
+### Get All Profiles
+GET {{host}}/profiles
+
+### Get Main Profile Data
+@mainProfileId = {{createMainProfile.response.body.id}}
+GET {{host}}/profiles/{{mainProfileId}}
+
+### Update Main Profile
+PUT {{host}}/profiles/{{mainProfileId}}
+Content-Type: application/json
+
+{
+    "name": "Elite Power Lifter"
+}
+
+### Create Profile for Delete Test
+# @name createDeleteProfile
+POST {{host}}/profiles
+Content-Type: application/json
+
+{
+    "name": "To Be Deleted"
+}
+
+### Delete Profile
+@deleteProfileId = {{createDeleteProfile.response.body.id}}
+DELETE {{host}}/profiles/{{deleteProfileId}}
+
+
+# ----------------------------------------------------
+# Training Exercise Items
+# ----------------------------------------------------
+### Create Main Exercise Item
+# @name createMainExerciseItem
+POST {{host}}/training-exercise-items
+Content-Type: application/json
+
+{
+    "description": "Squat",
+    "video_url": "https://www.youtube.com/watch?v=aclHkVaku9U"
+}
+
+### Get All Training Exercise Items
+GET {{host}}/training-exercise-items
+
+### Get Main Exercise Item
+@mainExerciseItemId = {{createMainExerciseItem.response.body.id}}
+GET {{host}}/training-exercise-items/{{mainExerciseItemId}}
+
+### Update Main Exercise Item
+PUT {{host}}/training-exercise-items/{{mainExerciseItemId}}
+Content-Type: application/json
+
+{
+    "description": "Barbell Squat",
+    "video_url": "https://www.youtube.com/watch?v=UltWZ3X0d5c"
+}
+
+### Create Exercise Item for Delete Test
+# @name createDeleteExerciseItem
+POST {{host}}/training-exercise-items
+Content-Type: application/json
+
+{
+    "description": "To Be Deleted Exercise"
+}
+
+### Delete Exercise Item
+@deleteExerciseItemId = {{createDeleteExerciseItem.response.body.id}}
+DELETE {{host}}/training-exercise-items/{{deleteExerciseItemId}}
+
+
+# ----------------------------------------------------
+# Training Plans
+# ----------------------------------------------------
+### Create Training Plan
+# Need mainProfileId and mainExerciseItemId from previous steps to exist
+POST {{host}}/training-plans
+Content-Type: application/json
+
+{
+    "name": "Leg Day",
+    "profile_id": "{{mainProfileId}}",
+    "training_exercises": [
+        {
+            "order": 1,
+            "training_exercise_item_id": "ff4a1038-4b0c-4e5c-bc91-c3a4f997bf05",
+            "sets": 3,
+            "reps": 5,
+            "equipment": "Barbell",
+            "break_time_seconds": 180
+        },
+                {
+            "order": 2,
+            "training_exercise_item_id": "af0936a1-d117-44e2-a1b1-a4b74c338b62",
+            "sets": 3,
+            "reps": 5,
+            "equipment": "Barbell",
+            "break_time_seconds": 180
+        }
+    ]
+}
+
+### Get All Training Plans
+GET {{host}}/training-plans
+
+### Get Training Plan
+@planId = {{createTrainingPlan.response.body.id}}
+GET {{host}}/training-plans/{{planId}}
+
+### Update Training Plan
+PUT {{host}}/training-plans/{{planId}}
+Content-Type: application/json
+
+{
+    "name": "Heavy Leg Day",
+    "profile_id": "809b7e8a-a440-4446-b8ad-3a643d5689e3",
+    "training_exercises": [
+        {
+            "order": 1,
+            "training_exercise_item_id": "{{mainExerciseItemId}}",
+            "sets": 5,
+            "reps": 5,
+            "equipment": "Power Rack",
+            "break_time_seconds": 300
+        }
+    ]
+}
+
+### Create Plan for Delete Test
+# @name createDeletePlan
+POST {{host}}/training-plans
+Content-Type: application/json
+
+{
+    "name": "To Be Deleted Plan",
+    "profile_id": "{{mainProfileId}}"
+}
+
+### Delete Training Plan
+@deletePlanId = {{createDeletePlan.response.body.id}}
+DELETE {{host}}/training-plans/{{deletePlanId}}

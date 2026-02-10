@@ -161,3 +161,6 @@ Content-Type: application/json
 ### Delete Training Plan
 @deletePlanId = {{createDeletePlan.response.body.id}}
 DELETE {{host}}/training-plans/{{deletePlanId}}
+
+### Execute Training Plan
+GET {{host}}/training-plans/c77258e9-2523-4c1f-9442-86919e2fb75e/execute

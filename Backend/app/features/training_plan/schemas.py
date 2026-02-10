@@ -66,3 +66,25 @@ class TrainingPlanResponse(BaseModel):
     exercises: list[TrainingExerciseResponse] = Field(default_factory=list)
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class TrainingExerciseExecuteResponse(BaseModel):
+    id: UUID
+    order: int
+    equipment: str | None = None
+    reps: int = 1
+    break_time_seconds: int
+    training_exercise_description: str
+    training_exercise_video_url: str | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TrainingPlanExecuteResponse(BaseModel):
+    id: UUID
+    name: str
+    profile_id: UUID
+    exercises: list[TrainingExerciseExecuteResponse] = Field(
+        default_factory=list)
+
+    model_config = ConfigDict(from_attributes=True)

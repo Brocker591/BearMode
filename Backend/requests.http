@@ -101,7 +101,7 @@ Content-Type: application/json
 
 {
     "name": "Leg Day",
-    "profile_id": "{{mainProfileId}}",
+    "profile_id": "695057c8-9858-4203-9e84-536b7aedc4a4",
     "training_exercises": [
         {
             "order": 1,

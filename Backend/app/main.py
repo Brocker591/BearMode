@@ -4,11 +4,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.database import Base, engine
 from app.features.health.router import router as health_router
-# from app.features.profiles import models as profiles_models  # noqa: F401
 from app.features.profiles.router import router as profiles_router
-# from app.features.training_exercise_items import models as training_exercise_items_models  # noqa: F401
 from app.features.training_exercise_items.router import router as training_exercise_items_router
-from app.features.training_plan.router import router as training_plan_router
+from app.features.training_plan.training_plan_create import router as training_plan_create_router
+from app.features.training_plan.training_plan_get_all import router as training_plan_get_all_router
+from app.features.training_plan.training_plan_get_by_id import router as training_plan_get_by_id_router
+from app.features.training_plan.training_plan_update import router as training_plan_update_router
+from app.features.training_plan.training_plan_delete import router as training_plan_delete_router
 
 
 @asynccontextmanager
@@ -40,5 +42,9 @@ app.include_router(health_router, prefix="/health", tags=["health"])
 app.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
 app.include_router(training_exercise_items_router,
                    prefix="/training-exercise-items", tags=["training-exercise-items"])
-app.include_router(training_plan_router,
-                   prefix="/training-plans", tags=["training-plans"])
+
+app.include_router(training_plan_create_router)
+app.include_router(training_plan_get_all_router)
+app.include_router(training_plan_get_by_id_router)
+app.include_router(training_plan_update_router)
+app.include_router(training_plan_delete_router)

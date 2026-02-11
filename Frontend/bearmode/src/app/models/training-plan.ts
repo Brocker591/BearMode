@@ -41,3 +41,21 @@ export interface TrainingExerciseCreate {
     break_time_seconds?: number | null;
     training_exercise_item_id?: string | null;
 }
+
+export interface TrainingExerciseExecuteResponse {
+    id: string;
+    order: number;
+    equipment?: string | null;
+    reps: number;
+    break_time_seconds: number;
+    training_exercise_description: string;
+    training_exercise_video_url?: string | null;
+}
+
+export interface TrainingPlanExecuteResponse {
+    id: string;
+    name: string;
+    profile_id: string;
+    exercises: TrainingExerciseExecuteResponse[];
+}
+

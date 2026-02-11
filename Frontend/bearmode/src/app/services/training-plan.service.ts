@@ -5,7 +5,8 @@ import { environment } from '../../environments/environment';
 import type {
     TrainingPlan,
     TrainingPlanCreate,
-    TrainingPlanUpdate
+    TrainingPlanUpdate,
+    TrainingPlanExecuteResponse
 } from '../models/training-plan';
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +33,11 @@ export class TrainingPlanService {
 
     delete(id: string): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(catchError(this.handleError));
+    }
+
+    getExecutePlan(id: string): Observable<TrainingPlanExecuteResponse> {
+        return this.http.get<TrainingPlanExecuteResponse>(`${this.baseUrl}/${id}/execute`)
+            .pipe(catchError(this.handleError));
     }
 
     private handleError(error: { status?: number; error?: { detail?: string }; message?: string }) {

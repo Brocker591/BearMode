@@ -1,0 +1,86 @@
+<div class="w-full h-full bg-gray-900 text-white flex flex-col items-center justify-center p-8 shadow-lg relative z-20">
+    <div class="absolute top-0 left-0 w-full p-6 flex justify-start z-30">
+        <button mat-flat-button class="!bg-gray-800 !text-white hover:!bg-gray-700 border border-gray-700"
+            (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Zurück
+        </button>
+    </div>
+
+    <div class="text-center w-full">
+        <h2 class="text-gray-400 uppercase tracking-widest text-sm font-semibold mb-2">Timer</h2>
+
+        <div
+            class="text-7xl xl:text-8xl font-mono font-bold tracking-tighter text-blue-400 drop-shadow-lg mb-8 select-none">
+            {{ formattedTime() }}
+        </div>
+
+        <!-- Manual Input -->
+        <!-- Manual Input -->
+        <div class="flex items-center justify-center gap-3 mb-8">
+            <div class="relative">
+                <input type="number" min="0" placeholder="00" [ngModel]="inputMinutes()"
+                    (ngModelChange)="inputMinutes.set($event)" (keyup.enter)="setTimerFromInput()"
+                    class="w-20 bg-gray-800 text-white text-2xl font-mono text-center rounded-lg border border-gray-700 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-gray-600 transition-all">
+                <span
+                    class="absolute -bottom-6 left-0 w-full text-center text-xs text-gray-500 uppercase tracking-wider">Min</span>
+            </div>
+
+            <span class="text-gray-400 font-bold text-2xl pb-2">:</span>
+
+            <div class="relative">
+                <input type="number" min="0" max="59" placeholder="00" [ngModel]="inputSeconds()"
+                    (ngModelChange)="inputSeconds.set($event)" (keyup.enter)="setTimerFromInput()"
+                    class="w-20 bg-gray-800 text-white text-2xl font-mono text-center rounded-lg border border-gray-700 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-gray-600 transition-all">
+                <span
+                    class="absolute -bottom-6 left-0 w-full text-center text-xs text-gray-500 uppercase tracking-wider">Sek</span>
+            </div>
+
+            <button mat-flat-button color="accent" (click)="setTimerFromInput()"
+                class="h-14 ml-2 min-w-[60px] rounded-lg">
+                Set
+            </button>
+        </div>
+
+        <!-- Timer Controls -->
+        <div class="flex justify-center gap-6 mb-8">
+            @if (timerRunning()) {
+            <button mat-fab color="warn" (click)="pauseTimer()" class="scale-125 transition-transform"
+                matTooltip="Pause">
+                <mat-icon>pause</mat-icon>
+            </button>
+            } @else {
+            <button mat-fab color="primary" (click)="startTimer()" class="scale-125 transition-transform"
+                [disabled]="timerValue() <= 0" matTooltip="Start">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            }
+
+            <button mat-mini-fab color="accent" (click)="stopTimer()" matTooltip="Reset">
+                <mat-icon>stop</mat-icon>
+            </button>
+        </div>
+
+        <!-- Quick Add Buttons -->
+        <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto mb-10">
+            <button mat-stroked-button class="text-white border-gray-600 hover:bg-gray-800"
+                (click)="addTime(30)">+30s</button>
+            <button mat-stroked-button class="text-white border-gray-600 hover:bg-gray-800"
+                (click)="addTime(60)">+1m</button>
+            <button mat-stroked-button class="text-white border-gray-600 hover:bg-gray-800"
+                (click)="addTime(90)">+1.5m</button>
+            <button mat-stroked-button class="text-white border-gray-600 hover:bg-gray-800"
+                (click)="addTime(120)">+2m</button>
+            <button mat-stroked-button class="text-white border-gray-600 hover:bg-gray-800"
+                (click)="addTime(180)">+3m</button>
+            <button mat-stroked-button class="text-white border-gray-600 hover:bg-gray-800"
+                (click)="addTime(300)">+5m</button>
+        </div>
+
+        @if (planName) {
+        <div class="p-6 bg-gray-800 rounded-xl border border-gray-700 w-full">
+            <h1 class="text-2xl font-bold text-white mb-2 truncate">{{ planName }}</h1>
+            <p class="text-gray-400 text-sm">Ausführung läuft...</p>
+        </div>
+        }
+    </div>
+</div>

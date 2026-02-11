@@ -1,0 +1,60 @@
+<div class="h-full bg-white relative">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 sticky top-0 bg-white z-10 py-4 border-b">
+            Übersicht
+        </h2>
+
+        <table mat-table [dataSource]="dataSource" class="w-full">
+
+            <!-- Order Column -->
+            <ng-container matColumnDef="order">
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600 w-16">#</th>
+                <td mat-cell *matCellDef="let element" class="font-medium text-gray-900">{{element.order}}</td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600">Übung</th>
+                <td mat-cell *matCellDef="let element" class="text-gray-800 font-medium text-lg">
+                    {{element.training_exercise_description}}
+                    @if(element.equipment) {
+                    <span class="block text-xs text-gray-500 font-normal mt-1">{{element.equipment}}</span>
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sets_info">
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600">Wdh.</th>
+                <td mat-cell *matCellDef="let element" class="text-gray-700 text-lg">
+                    {{element.reps}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="break_time">
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600">Pause</th>
+                <td mat-cell *matCellDef="let element">
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {{element.break_time_seconds}}s
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="video">
+                <th mat-header-cell *matHeaderCellDef class="w-12"></th>
+                <td mat-cell *matCellDef="let element">
+                    @if(element.training_exercise_video_url) {
+                    <button mat-icon-button color="primary" (click)="openVideo(element.training_exercise_video_url)"
+                        matTooltip="Video ansehen">
+                        <mat-icon>play_circle_outline</mat-icon>
+                    </button>
+                    }
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                class="hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 h-16"></tr>
+        </table>
+    </div>
+</div>

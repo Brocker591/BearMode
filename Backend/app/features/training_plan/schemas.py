@@ -70,6 +70,7 @@ class TrainingPlanResponse(BaseModel):
 
 class TrainingExerciseExecuteResponse(BaseModel):
     id: UUID
+    exercise_id: UUID
     order: int
     equipment: str | None = None
     reps: int = 1

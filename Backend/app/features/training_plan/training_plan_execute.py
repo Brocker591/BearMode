@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from uuid import UUID
+from uuid import UUID, uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,10 +27,11 @@ async def get_training_plan(plan_id: UUID, session: AsyncSession = Depends(get_s
     order = 1
 
     for exercise in sorted(plan.exercises, key=lambda e: e.order):
-        for set in range(exercise.sets+1):
+        for set in range(exercise.sets):
 
             execute_exercise = TrainingExerciseExecuteResponse(
-                id=exercise.id,
+                id=uuid4(),
+                exercise_id=exercise.id,
                 order=order,
                 equipment=exercise.equipment,
                 reps=exercise.reps,

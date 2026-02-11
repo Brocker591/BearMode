@@ -6,26 +6,42 @@
 
         <table mat-table [dataSource]="dataSource" class="w-full">
 
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="completed">
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600 w-12 text-center">
+                    <mat-icon class="text-gray-400 align-middle">check_circle_outline</mat-icon>
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleCompletion(element)"
+                        [checked]="isCompleted(element)" color="primary">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
             <!-- Order Column -->
             <ng-container matColumnDef="order">
                 <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600 w-16">#</th>
-                <td mat-cell *matCellDef="let element" class="font-medium text-gray-900">{{element.order}}</td>
+                <td mat-cell *matCellDef="let element" class="font-medium text-gray-900"
+                    [class.opacity-50]="isCompleted(element)">{{element.order}}</td>
             </ng-container>
 
             <!-- Description Column -->
             <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600">Übung</th>
-                <td mat-cell *matCellDef="let element" class="text-gray-800 font-medium text-lg">
+                <td mat-cell *matCellDef="let element" class="text-gray-800 font-medium text-lg"
+                    [class.completed-text]="isCompleted(element)">
                     {{element.training_exercise_description}}
                     @if(element.equipment) {
-                    <span class="block text-xs text-gray-500 font-normal mt-1">{{element.equipment}}</span>
+                    <span class="block text-xs text-gray-500 font-normal mt-1"
+                        [class.text-gray-300]="isCompleted(element)">{{element.equipment}}</span>
                     }
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="sets_info">
                 <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600">Wdh.</th>
-                <td mat-cell *matCellDef="let element" class="text-gray-700 text-lg">
+                <td mat-cell *matCellDef="let element" class="text-gray-700 text-lg"
+                    [class.completed-text]="isCompleted(element)">
                     {{element.reps}}
                 </td>
             </ng-container>
@@ -34,7 +50,8 @@
                 <th mat-header-cell *matHeaderCellDef class="font-bold text-gray-600">Pause</th>
                 <td mat-cell *matCellDef="let element">
                     <span
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors"
+                        [ngClass]="isCompleted(element) ? 'bg-gray-200 text-gray-400' : 'bg-blue-100 text-blue-800'">
                         {{element.break_time_seconds}}s
                     </span>
                 </td>
@@ -45,7 +62,7 @@
                 <td mat-cell *matCellDef="let element">
                     @if(element.training_exercise_video_url) {
                     <button mat-icon-button color="primary" (click)="openVideo(element.training_exercise_video_url)"
-                        matTooltip="Video ansehen">
+                        matTooltip="Video ansehen" [disabled]="isCompleted(element)">
                         <mat-icon>play_circle_outline</mat-icon>
                     </button>
                     }
@@ -54,7 +71,8 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                class="hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 h-16"></tr>
+                class="hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 h-16 cursor-pointer"
+                [class.bg-gray-50]="isCompleted(row)" (click)="toggleCompletion(row)"></tr>
         </table>
     </div>
 </div>

@@ -44,6 +44,7 @@ export interface TrainingExerciseCreate {
 
 export interface TrainingExerciseExecuteResponse {
     id: string;
+    exercise_id: string;
     order: number;
     equipment?: string | null;
     reps: number;

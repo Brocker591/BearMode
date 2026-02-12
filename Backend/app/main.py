@@ -12,6 +12,7 @@ from app.features.training_plan.training_plan_get_by_id import router as trainin
 from app.features.training_plan.training_plan_update import router as training_plan_update_router
 from app.features.training_plan.training_plan_delete import router as training_plan_delete_router
 from app.features.training_plan.training_plan_execute import router as training_plan_execute_router
+from app.features.training_plan.training_plan_completion_create import router as training_plan_completion_router
 
 
 @asynccontextmanager
@@ -50,3 +51,5 @@ app.include_router(training_plan_get_by_id_router)
 app.include_router(training_plan_update_router)
 app.include_router(training_plan_delete_router)
 app.include_router(training_plan_execute_router)
+app.include_router(training_plan_completion_router)
+

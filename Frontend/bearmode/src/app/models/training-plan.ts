@@ -60,3 +60,16 @@ export interface TrainingPlanExecuteResponse {
     exercises: TrainingExerciseExecuteResponse[];
 }
 
+
+export interface TrainingExerciseCompletion {
+    id?: string;
+    profile_id: string;
+    training_plan_id: string;
+    exercise_id: string;
+    order: number;
+    equipment?: string | null;
+    reps: number;
+    break_time_seconds: number;
+    training_exercise_description: string;
+    training_exercise_video_url?: string | null;
+}

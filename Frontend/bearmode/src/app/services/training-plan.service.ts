@@ -6,7 +6,8 @@ import type {
     TrainingPlan,
     TrainingPlanCreate,
     TrainingPlanUpdate,
-    TrainingPlanExecuteResponse
+    TrainingPlanExecuteResponse,
+    TrainingExerciseCompletion
 } from '../models/training-plan';
 
 @Injectable({ providedIn: 'root' })
@@ -37,6 +38,11 @@ export class TrainingPlanService {
 
     getExecutePlan(id: string): Observable<TrainingPlanExecuteResponse> {
         return this.http.get<TrainingPlanExecuteResponse>(`${this.baseUrl}/${id}/execute`)
+            .pipe(catchError(this.handleError));
+    }
+
+    complete(exercises: TrainingExerciseCompletion[]): Observable<void> {
+        return this.http.post<void>(`${this.baseUrl}/exercice-completion`, exercises)
             .pipe(catchError(this.handleError));
     }
 

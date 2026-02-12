@@ -17,7 +17,8 @@
             <button mat-stroked-button color="warn" class="ml-4" (click)="goBack()">Zurück</button>
         </div>
         } @else {
-        <app-training-execute-table [exercises]="plan()?.exercises || []"></app-training-execute-table>
+        <app-training-execute-table [exercises]="plan()?.exercises || []" [profileId]="plan()?.profile_id!"
+            [trainingPlanId]="plan()?.id!"></app-training-execute-table>
         }
     </div>
 </div>

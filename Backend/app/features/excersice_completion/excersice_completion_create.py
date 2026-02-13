@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from uuid import uuid4, UUID
+from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database import get_session
@@ -15,10 +16,10 @@ router = APIRouter()
 async def validate_ids(session: AsyncSession, model, ids: set[UUID], model_name: str):
     if not ids:
         return
-    
+
     result = await session.scalars(select(model.id).where(model.id.in_(ids)))
     found_ids = set(result.all())
-    
+
     missing_ids = ids - found_ids
     if missing_ids:
         raise HTTPException(
@@ -32,7 +33,8 @@ async def create_training_plan(exercise_compeltions: list[TrainingExerciseComple
     try:
         # Collect unique IDs
         profile_ids = {ec.profile_id for ec in exercise_compeltions}
-        training_plan_ids = {ec.training_plan_id for ec in exercise_compeltions}
+        training_plan_ids = {
+            ec.training_plan_id for ec in exercise_compeltions}
         exercise_ids = {ec.exercise_id for ec in exercise_compeltions}
 
         # Validate existence
@@ -51,7 +53,8 @@ async def create_training_plan(exercise_compeltions: list[TrainingExerciseComple
                 reps=exercise_completion.reps,
                 break_time_seconds=exercise_completion.break_time_seconds,
                 training_exercise_description=exercise_completion.training_exercise_description,
-                training_exercise_video_url=exercise_completion.training_exercise_video_url
+                training_exercise_video_url=exercise_completion.training_exercise_video_url,
+                created_at=datetime.now()
             )
             session.add(completion)
 

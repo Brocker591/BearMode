@@ -8,11 +8,12 @@ from app.features.profiles.router import router as profiles_router
 from app.features.training_exercise_items.router import router as training_exercise_items_router
 from app.features.training_plan.training_plan_create import router as training_plan_create_router
 from app.features.training_plan.training_plan_get_all import router as training_plan_get_all_router
+from app.features.training_plan.training_plan_get_all_by_profile_id import router as training_plan_get_all_by_profile_id_router
 from app.features.training_plan.training_plan_get_by_id import router as training_plan_get_by_id_router
 from app.features.training_plan.training_plan_update import router as training_plan_update_router
 from app.features.training_plan.training_plan_delete import router as training_plan_delete_router
 from app.features.training_plan.training_plan_execute import router as training_plan_execute_router
-from app.features.training_plan.training_plan_completion_create import router as training_plan_completion_router
+from app.features.excersice_completion.excersice_completion_create import router as training_plan_completion_router
 
 
 @asynccontextmanager
@@ -44,9 +45,9 @@ app.include_router(health_router, prefix="/health", tags=["health"])
 app.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
 app.include_router(training_exercise_items_router,
                    prefix="/training-exercise-items", tags=["training-exercise-items"])
-
 app.include_router(training_plan_create_router)
 app.include_router(training_plan_get_all_router)
+app.include_router(training_plan_get_all_by_profile_id_router)
 app.include_router(training_plan_get_by_id_router)
 app.include_router(training_plan_update_router)
 app.include_router(training_plan_delete_router)

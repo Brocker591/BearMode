@@ -1,10 +1,13 @@
 import uuid
-from sqlalchemy import ForeignKey, Integer, String
+from datetime import datetime
+from venv import create
+from sqlalchemy import ForeignKey, Integer, String, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 from app.infrastructure.database import Base
+
 
 class TrainingExerciseCompletion(Base):
     __tablename__ = "training_exercise_completions"
@@ -27,5 +30,12 @@ class TrainingExerciseCompletion(Base):
     equipment: Mapped[str] = mapped_column(String(255), nullable=True)
     reps: Mapped[int] = mapped_column(Integer, nullable=False)
     break_time_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
-    training_exercise_description: Mapped[str] = mapped_column(String(255), nullable=False)
-    training_exercise_video_url: Mapped[str] = mapped_column(String(255), nullable=True)
+    training_exercise_description: Mapped[str] = mapped_column(
+        String(255), nullable=False)
+    training_exercise_video_url: Mapped[str] = mapped_column(
+        String(255), nullable=True)
+    created_on: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.now(),
+        nullable=False
+    )

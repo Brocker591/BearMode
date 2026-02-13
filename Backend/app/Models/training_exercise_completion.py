@@ -1,7 +1,7 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, date
 from venv import create
-from sqlalchemy import ForeignKey, Integer, String, DateTime
+from sqlalchemy import ForeignKey, Integer, String, DateTime, Date
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -34,8 +34,9 @@ class TrainingExerciseCompletion(Base):
         String(255), nullable=False)
     training_exercise_video_url: Mapped[str] = mapped_column(
         String(255), nullable=True)
-    created_on: Mapped[datetime] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.now(),
         nullable=False
     )
+    training_day: Mapped[date] = mapped_column(Date, nullable=False)

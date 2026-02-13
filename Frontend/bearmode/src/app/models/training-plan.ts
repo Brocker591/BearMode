@@ -62,7 +62,7 @@ export interface TrainingPlanExecuteResponse {
 
 
 export interface TrainingExerciseCompletion {
-    id?: string;
+    id: string;
     profile_id: string;
     training_plan_id: string;
     exercise_id: string;
@@ -72,4 +72,5 @@ export interface TrainingExerciseCompletion {
     break_time_seconds: number;
     training_exercise_description: string;
     training_exercise_video_url?: string | null;
+    training_day?: string | null;
 }

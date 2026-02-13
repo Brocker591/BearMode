@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, WritableSignal } from '@angular/core';
+import { Component, OnInit, signal, computed, WritableSignal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -63,6 +63,13 @@ export class TrainingPlanPageComponent implements OnInit {
         private readonly dialog: MatDialog
     ) {
         this.selectedProfile = this.profileService.selectedProfile;
+
+        effect(() => {
+            const profile = this.selectedProfile();
+            if (profile) {
+                this.loadPlans();
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -80,7 +87,17 @@ export class TrainingPlanPageComponent implements OnInit {
     loadPlans(): void {
         this.loading.set(true);
         this.errorMessage.set(null);
-        this.trainingPlanService.getAll().subscribe({
+
+        const profile = this.selectedProfile();
+        let obs$;
+
+        if (profile) {
+            obs$ = this.trainingPlanService.getAllByProfileId(profile.id);
+        } else {
+            obs$ = this.trainingPlanService.getAll();
+        }
+
+        obs$.subscribe({
             next: (plans) => {
                 this.dataSource.data = plans;
                 this.loading.set(false);

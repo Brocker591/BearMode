@@ -82,6 +82,7 @@ export class TrainingExecuteTableComponent implements OnChanges {
         this.exercises.forEach(exercise => {
             if (this.completedExercises.has(exercise.id)) {
                 completions.push({
+                    id: crypto.randomUUID(),
                     profile_id: this.profileId,
                     training_plan_id: this.trainingPlanId,
                     exercise_id: exercise.exercise_id,

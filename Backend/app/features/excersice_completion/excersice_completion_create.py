@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database import get_session
 from app.Models.training_exercise_completion import TrainingExerciseCompletion as TrainingExerciseCompletionModel
-from app.features.training_plan.schemas import TrainingExerciseCompletion
+from app.features.excersice_completion.schemas import TrainingExerciseCompletion
 from app.Models.profile import Profile
 from app.Models.training_plan import TrainingPlan, TrainingExercise
 
@@ -28,7 +28,7 @@ async def validate_ids(session: AsyncSession, model, ids: set[UUID], model_name:
         )
 
 
-@router.post("/training-plans/exercice-completion", response_model=list[TrainingExerciseCompletion], status_code=204, tags=["training-plans"])
+@router.post("/exercice-completion", status_code=201, tags=["exercice-completion"])
 async def create_training_plan(exercise_compeltions: list[TrainingExerciseCompletion], session: AsyncSession = Depends(get_session)) -> None:
     try:
         # Collect unique IDs
@@ -54,7 +54,8 @@ async def create_training_plan(exercise_compeltions: list[TrainingExerciseComple
                 break_time_seconds=exercise_completion.break_time_seconds,
                 training_exercise_description=exercise_completion.training_exercise_description,
                 training_exercise_video_url=exercise_completion.training_exercise_video_url,
-                created_at=datetime.now()
+                created_at=datetime.now(),
+                training_day=exercise_completion.training_day or datetime.now().date()
             )
             session.add(completion)
 

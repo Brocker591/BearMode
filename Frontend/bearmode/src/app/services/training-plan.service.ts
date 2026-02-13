@@ -20,6 +20,10 @@ export class TrainingPlanService {
         return this.http.get<TrainingPlan[]>(this.baseUrl).pipe(catchError(this.handleError));
     }
 
+    getAllByProfileId(profileId: string): Observable<TrainingPlan[]> {
+        return this.http.get<TrainingPlan[]>(`${this.baseUrl}/byProfileId/${profileId}`).pipe(catchError(this.handleError));
+    }
+
     getById(id: string): Observable<TrainingPlan> {
         return this.http.get<TrainingPlan>(`${this.baseUrl}/${id}`).pipe(catchError(this.handleError));
     }
@@ -42,7 +46,7 @@ export class TrainingPlanService {
     }
 
     complete(exercises: TrainingExerciseCompletion[]): Observable<void> {
-        return this.http.post<void>(`${this.baseUrl}/exercice-completion`, exercises)
+        return this.http.post<void>(`${environment.apiUrl}/exercice-completion`, exercises)
             .pipe(catchError(this.handleError));
     }
 

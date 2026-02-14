@@ -48,12 +48,12 @@ async def create_training_plan(exercise_compeltions: list[TrainingExerciseComple
                 profile_id=exercise_completion.profile_id,
                 training_plan_id=exercise_completion.training_plan_id,
                 exercise_id=exercise_completion.exercise_id,
+                exercise_description=exercise_completion.exercise_description,
+                exercise_video_url=exercise_completion.exercise_video_url,
                 order=exercise_completion.order,
                 equipment=exercise_completion.equipment,
                 reps=exercise_completion.reps,
                 break_time_seconds=exercise_completion.break_time_seconds,
-                training_exercise_description=exercise_completion.training_exercise_description,
-                training_exercise_video_url=exercise_completion.training_exercise_video_url,
                 created_at=datetime.now(),
                 training_day=exercise_completion.training_day or datetime.now().date()
             )

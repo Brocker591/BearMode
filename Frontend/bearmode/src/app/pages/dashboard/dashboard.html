@@ -1,0 +1,48 @@
+<div class="p-6 space-y-6 bg-gray-50 min-h-full">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p class="text-gray-500">Überblick über deine Trainingsfortschritte</p>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Gesamt Übungen</h3>
+            <p class="mt-2 text-3xl font-bold text-gray-900">{{ totalExercisesCompleted() }}</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Diese Woche</h3>
+            <p class="mt-2 text-3xl font-bold text-blue-600">{{ exercisesThisWeek() }}</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Lieblingsübung</h3>
+            <p class="mt-2 text-xl font-bold text-purple-600 truncate" [title]="favoriteExercise()">
+                {{ favoriteExercise() }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <!-- Weekly Progress Chart -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 w-full">Aktivität (Letzte 7 Tage)</h3>
+            <div class="w-full h-64">
+                <canvas baseChart [data]="weeklyChartData" [options]="weeklyChartOptions" [type]="weeklyChartType">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Top Exercises Chart -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 w-full">Top 5 Übungen</h3>
+            <div class="w-full h-64 flex justify-center">
+                <canvas baseChart [data]="topExercisesChartData" [options]="topExercisesChartOptions"
+                    [type]="topExercisesChartType">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>

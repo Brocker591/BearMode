@@ -7,6 +7,7 @@ import { TrainingPlanPageComponent } from './pages/training-plan-page/training-p
 import { SelectProfileComponent } from './pages/select-profile/select-profile.component';
 import { TrainingExecuteListComponent } from './pages/training-execute/training-execute-list/training-execute-list.component';
 import { TrainingExecuteSessionComponent } from './pages/training-execute/training-execute-session/training-execute-session.component';
+import { Dashboard } from './pages/dashboard/dashboard';
 import { profileGuard } from './guards/profile.guard';
 
 export const routes: Routes = [
@@ -23,6 +24,7 @@ export const routes: Routes = [
       { path: 'training-exercise-item', component: TrainingExerciseItemComponent, canActivate: [profileGuard] },
       { path: 'training-plans', component: TrainingPlanPageComponent, canActivate: [profileGuard] },
       { path: 'training-execute', component: TrainingExecuteListComponent, canActivate: [profileGuard] },
+      { path: 'dashboard', component: Dashboard, canActivate: [profileGuard] },
     ]
   },
   {

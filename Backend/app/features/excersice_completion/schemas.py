@@ -9,12 +9,12 @@ class TrainingExerciseCompletion(BaseModel):
     profile_id: UUID
     training_plan_id: UUID
     exercise_id: UUID
+    exercise_description: str
+    exercise_video_url: str | None = None
     order: int
     equipment: str | None = None
     reps: int = 1
     break_time_seconds: int
-    training_exercise_description: str
-    training_exercise_video_url: str | None = None
     training_day: date | None = None
 
     model_config = ConfigDict(from_attributes=True)

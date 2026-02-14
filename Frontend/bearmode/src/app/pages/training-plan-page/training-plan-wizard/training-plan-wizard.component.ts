@@ -206,4 +206,8 @@ export class TrainingPlanWizardComponent implements OnInit {
             });
         }
     }
+
+    cancel(): void {
+        this.dialogRef.close(false);
+    }
 }

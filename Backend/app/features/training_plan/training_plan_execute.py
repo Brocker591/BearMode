@@ -36,8 +36,7 @@ async def get_training_plan(plan_id: UUID, session: AsyncSession = Depends(get_s
                 equipment=exercise.equipment,
                 reps=exercise.reps,
                 break_time_seconds=exercise.break_time_seconds,
-                training_exercise_description=exercise.training_exercise_item.description +
-                f" (Set {set + 1})",
+                training_exercise_description=exercise.training_exercise_item.description,
                 training_exercise_video_url=exercise.training_exercise_item.video_url
             )
 

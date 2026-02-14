@@ -90,8 +90,8 @@ export class TrainingExecuteTableComponent implements OnChanges {
                     equipment: exercise.equipment,
                     reps: exercise.reps,
                     break_time_seconds: exercise.break_time_seconds,
-                    training_exercise_description: exercise.training_exercise_description,
-                    training_exercise_video_url: exercise.training_exercise_video_url
+                    exercise_description: exercise.training_exercise_description,
+                    exercise_video_url: exercise.training_exercise_video_url
                 });
             }
         });
@@ -99,7 +99,7 @@ export class TrainingExecuteTableComponent implements OnChanges {
         this.trainingPlanService.complete(completions).subscribe({
             next: () => {
                 this.snackBar.open('Training erfolgreich abgeschlossen!', 'Ok', { duration: 3000 });
-                this.router.navigate(['/training-plans']);
+                this.router.navigate(['/training-execute']);
             },
             error: (err) => {
                 console.error('Fehler beim Abschließen des Trainings', err);

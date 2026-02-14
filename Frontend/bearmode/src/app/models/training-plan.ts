@@ -70,7 +70,7 @@ export interface TrainingExerciseCompletion {
     equipment?: string | null;
     reps: number;
     break_time_seconds: number;
-    training_exercise_description: string;
-    training_exercise_video_url?: string | null;
+    exercise_description: string;
+    exercise_video_url?: string | null;
     training_day?: string | null;
 }

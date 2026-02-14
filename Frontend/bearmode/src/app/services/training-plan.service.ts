@@ -57,4 +57,9 @@ export class TrainingPlanService {
                 : error?.message ?? 'Unbekannter Fehler';
         return throwError(() => ({ status: error?.status, detail }));
     }
+
+    getCompletionHistory(profileId: string): Observable<TrainingExerciseCompletion[]> {
+        return this.http.get<TrainingExerciseCompletion[]>(`${environment.apiUrl}/exercice-completion/byProfileId/${profileId}`)
+            .pipe(catchError(this.handleError));
+    }
 }

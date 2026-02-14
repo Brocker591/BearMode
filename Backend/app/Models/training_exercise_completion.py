@@ -26,14 +26,14 @@ class TrainingExerciseCompletion(Base):
     exercise_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("training_exercises.id"), nullable=False
     )
+    exercise_description: Mapped[str] = mapped_column(
+        String(255), nullable=False)
+    exercise_video_url: Mapped[str] = mapped_column(String(255), nullable=True)
+
     order: Mapped[int] = mapped_column(Integer, nullable=False)
     equipment: Mapped[str] = mapped_column(String(255), nullable=True)
     reps: Mapped[int] = mapped_column(Integer, nullable=False)
     break_time_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
-    training_exercise_description: Mapped[str] = mapped_column(
-        String(255), nullable=False)
-    training_exercise_video_url: Mapped[str] = mapped_column(
-        String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.now(),

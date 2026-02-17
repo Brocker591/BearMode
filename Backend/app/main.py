@@ -5,7 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.database import Base, engine
 from app.features.health.router import router as health_router
 from app.features.profiles.router import router as profiles_router
-from app.features.training_exercise_items.router import router as training_exercise_items_router
+from app.features.training_exercise_items.training_exercise_item_create import router as training_exercise_item_create_router
+from app.features.training_exercise_items.training_exercise_item_get_all import router as training_exercise_item_get_all_router
+from app.features.training_exercise_items.training_exercise_item_get_by_id import router as training_exercise_item_get_by_id_router
+from app.features.training_exercise_items.training_exercise_item_update import router as training_exercise_item_update_router
+from app.features.training_exercise_items.training_exercise_item_delete import router as training_exercise_item_delete_router
 from app.features.training_plan.training_plan_create import router as training_plan_create_router
 from app.features.training_plan.training_plan_get_all import router as training_plan_get_all_router
 from app.features.training_plan.training_plan_get_all_by_profile_id import router as training_plan_get_all_by_profile_id_router
@@ -49,7 +53,11 @@ app.add_middleware(
 
 app.include_router(health_router, prefix="/health", tags=["health"])
 app.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
-app.include_router(training_exercise_items_router, prefix="/training-exercise-items", tags=["training-exercise-items"])
+app.include_router(training_exercise_item_create_router)
+app.include_router(training_exercise_item_get_all_router)
+app.include_router(training_exercise_item_get_by_id_router)
+app.include_router(training_exercise_item_update_router)
+app.include_router(training_exercise_item_delete_router)
 app.include_router(training_plan_create_router)
 app.include_router(training_plan_get_all_router)
 app.include_router(training_plan_get_all_by_profile_id_router)

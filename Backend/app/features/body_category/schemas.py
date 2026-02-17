@@ -8,6 +8,7 @@ class BodyCategoryCreate(BaseModel):
 
 
 class BodyCategoryUpdate(BaseModel):
+    id: UUID
     name: str
 
 

@@ -15,6 +15,11 @@ from app.features.training_plan.training_plan_delete import router as training_p
 from app.features.training_plan.training_plan_execute import router as training_plan_execute_router
 from app.features.excersice_completion.excersice_completion_create import router as training_plan_completion_router
 from app.features.excersice_completion.excersice_completion_get_all_by_profile_id import router as excersice_completion_get_all_by_profile_id_router
+from app.features.body_category.body_category_create import router as body_category_create_router
+from app.features.body_category.body_category_get_all import router as body_category_get_all_router
+from app.features.body_category.body_category_get_by_id import router as body_category_get_by_id_router
+from app.features.body_category.body_category_update import router as body_category_update_router
+from app.features.body_category.body_category_delete import router as body_category_delete_router
 
 
 @asynccontextmanager
@@ -53,4 +58,10 @@ app.include_router(training_plan_update_router)
 app.include_router(training_plan_delete_router)
 app.include_router(training_plan_execute_router)
 app.include_router(excersice_completion_get_all_by_profile_id_router)
+
 app.include_router(training_plan_completion_router)
+app.include_router(body_category_create_router)
+app.include_router(body_category_get_all_router)
+app.include_router(body_category_get_by_id_router)
+app.include_router(body_category_update_router)
+app.include_router(body_category_delete_router)

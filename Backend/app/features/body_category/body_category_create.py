@@ -11,7 +11,7 @@ from app.infrastructure.database import get_session
 router = APIRouter()
 
 
-@router.post("", response_model=BodyCategoryResponse, status_code=201)
+@router.post("/body-categories", response_model=BodyCategoryResponse, status_code=201)
 async def post_body_category(body: BodyCategoryCreate, session: AsyncSession = Depends(get_session)) -> BodyCategoryResponse:
 
     existing = (await session.execute(select(BodyCategory).where(BodyCategory.name == body.name))).scalar_one_or_none()

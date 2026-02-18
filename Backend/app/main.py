@@ -4,7 +4,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.database import Base, engine
 from app.features.health.router import router as health_router
-from app.features.profiles.router import router as profiles_router
+from app.features.profiles.profile_create import router as profile_create_router
+from app.features.profiles.profile_get_all import router as profile_get_all_router
+from app.features.profiles.profile_get_by_id import router as profile_get_by_id_router
+from app.features.profiles.profile_update import router as profile_update_router
+from app.features.profiles.profile_delete import router as profile_delete_router
 from app.features.training_exercise_items.training_exercise_item_create import router as training_exercise_item_create_router
 from app.features.training_exercise_items.training_exercise_item_get_all import router as training_exercise_item_get_all_router
 from app.features.training_exercise_items.training_exercise_item_get_by_id import router as training_exercise_item_get_by_id_router
@@ -52,7 +56,11 @@ app.add_middleware(
 )
 
 app.include_router(health_router, prefix="/health", tags=["health"])
-app.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
+app.include_router(profile_create_router)
+app.include_router(profile_get_all_router)
+app.include_router(profile_get_by_id_router)
+app.include_router(profile_update_router)
+app.include_router(profile_delete_router)
 app.include_router(training_exercise_item_create_router)
 app.include_router(training_exercise_item_get_all_router)
 app.include_router(training_exercise_item_get_by_id_router)

@@ -8,6 +8,7 @@ class ProfileCreate(BaseModel):
 
 
 class ProfileUpdate(BaseModel):
+    id: UUID
     name: str | None = None
 
 

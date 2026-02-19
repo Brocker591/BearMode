@@ -1,0 +1,66 @@
+<div class="page-container p-6">
+    <div class="page-header">
+        <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight m-0">Körperkategorien verwalten</h2>
+        @if (!formState()) {
+        <button mat-flat-button color="primary" class="btn-create" (click)="openCreate()">Neue Kategorie</button>
+        }
+    </div>
+
+    @if (errorMessage()) {
+    <div class="error-banner">
+        {{ errorMessage() }}
+    </div>
+    }
+
+    @if (formState(); as state) {
+    <div class="profile-form-card">
+        <h3 class="form-title">{{ isEditMode() ? 'Kategorie bearbeiten' : 'Neue Kategorie' }}</h3>
+        <div class="form-controls">
+            <mat-form-field appearance="outline" class="form-field-name">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="formNameValue" placeholder="Bezeichnung" />
+            </mat-form-field>
+
+            <div class="form-actions">
+                <button mat-button (click)="cancelForm()" [disabled]="formSaving()">Abbrechen</button>
+                <button mat-flat-button color="primary" (click)="saveForm()" [disabled]="formSaving()">
+                    {{ formSaving() ? 'Speichern…' : 'Speichern' }}
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <div class="table-container">
+        @if (loading()) {
+        <div class="loading-state">Laden…</div>
+        } @else {
+        <table mat-table [dataSource]="dataSource" class="profiles-table">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let row" class="cell-name">{{ row.name }}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="header-actions">Aktionen</th>
+                <td mat-cell *matCellDef="let row" class="cell-actions">
+                    <button mat-button color="primary" (click)="openEdit(row)">Bearbeiten</button>
+                    <button mat-button color="warn" (click)="deleteItem(row)">Löschen</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <!-- No Data Row -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+                    Keine Kategorien vorhanden.
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</div>

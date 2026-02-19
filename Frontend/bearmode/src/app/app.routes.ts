@@ -8,6 +8,7 @@ import { SelectProfileComponent } from './pages/select-profile/select-profile.co
 import { TrainingExecuteListComponent } from './pages/training-execute/training-execute-list/training-execute-list.component';
 import { TrainingExecuteSessionComponent } from './pages/training-execute/training-execute-session/training-execute-session.component';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { BodyCategoryComponent } from './pages/body-category/body-category.component';
 import { profileGuard } from './guards/profile.guard';
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: StartScreenComponent, canActivate: [profileGuard] },
       { path: 'manage-profile', component: ManageProfileComponent, canActivate: [profileGuard] },
+      { path: 'body-categories', component: BodyCategoryComponent, canActivate: [profileGuard] },
       { path: 'training-exercise-item', component: TrainingExerciseItemComponent, canActivate: [profileGuard] },
       { path: 'training-plans', component: TrainingPlanPageComponent, canActivate: [profileGuard] },
       { path: 'training-execute', component: TrainingExecuteListComponent, canActivate: [profileGuard] },

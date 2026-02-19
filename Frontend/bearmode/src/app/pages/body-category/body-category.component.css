@@ -1,0 +1,89 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.error-banner {
+    background-color: #fce4e4;
+    color: #cc0000;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+/* Form Card (Create/Edit) */
+.profile-form-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.form-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.form-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+}
+
+.form-field-name {
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Table */
+.table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profiles-table {
+    width: 100%;
+}
+
+.header-actions {
+    width: 180px;
+    text-align: right;
+}
+
+.cell-name {
+    font-weight: 500;
+}
+
+.cell-actions {
+    text-align: right;
+}
+
+.loading-state {
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+}
+
+.no-data-cell {
+    padding: 2rem;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}

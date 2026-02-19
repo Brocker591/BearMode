@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from uuid import UUID
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database import get_session
 from app.Models.training_exercise_item import TrainingExerciseItem
@@ -15,6 +16,7 @@ async def get_training_exercise_item(item_id: UUID, session: AsyncSession = Depe
 
     item = (await session.execute(
         select(TrainingExerciseItem)
+        .options(selectinload(TrainingExerciseItem.body_category))
         .where(TrainingExerciseItem.id == item_id)
     )).scalar_one_or_none()
 

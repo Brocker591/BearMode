@@ -8,6 +8,7 @@ from app.Models.training_exercise_completion import TrainingExerciseCompletion a
 from app.features.excersice_completion.schemas import TrainingExerciseCompletion
 from app.Models.profile import Profile
 from app.Models.training_plan import TrainingPlan, TrainingExercise
+from app.Models.body_category import BodyCategory
 
 
 router = APIRouter()
@@ -36,11 +37,13 @@ async def create_training_plan(exercise_compeltions: list[TrainingExerciseComple
         training_plan_ids = {
             ec.training_plan_id for ec in exercise_compeltions}
         exercise_ids = {ec.exercise_id for ec in exercise_compeltions}
+        body_category_ids = {ec.body_category_id for ec in exercise_compeltions}
 
         # Validate existence
         await validate_ids(session, Profile, profile_ids, "Profile")
         await validate_ids(session, TrainingPlan, training_plan_ids, "TrainingPlan")
         await validate_ids(session, TrainingExercise, exercise_ids, "TrainingExercise")
+        await validate_ids(session, BodyCategory, body_category_ids, "BodyCategory")
 
         for exercise_completion in exercise_compeltions:
             completion = TrainingExerciseCompletionModel(
@@ -50,6 +53,8 @@ async def create_training_plan(exercise_compeltions: list[TrainingExerciseComple
                 exercise_id=exercise_completion.exercise_id,
                 exercise_description=exercise_completion.exercise_description,
                 exercise_video_url=exercise_completion.exercise_video_url,
+                body_category_id=exercise_completion.body_category_id,
+                body_category_name=exercise_completion.body_category_name,
                 order=exercise_completion.order,
                 equipment=exercise_completion.equipment,
                 reps=exercise_completion.reps,

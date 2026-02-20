@@ -5,6 +5,7 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database import get_session
 from app.Models.training_plan import TrainingPlan, TrainingExercise
+from app.Models.training_exercise_item import TrainingExerciseItem
 from app.features.training_plan.schemas import TrainingPlanExecuteResponse, TrainingExerciseExecuteResponse
 
 
@@ -16,7 +17,7 @@ async def get_training_plan(plan_id: UUID, session: AsyncSession = Depends(get_s
 
     plan = (await session.execute(
         select(TrainingPlan)
-        .options(selectinload(TrainingPlan.exercises).selectinload(TrainingExercise.training_exercise_item))
+        .options(selectinload(TrainingPlan.exercises).selectinload(TrainingExercise.training_exercise_item).selectinload(TrainingExerciseItem.body_category))
         .where(TrainingPlan.id == plan_id)
     )).scalar_one_or_none()
 
@@ -37,7 +38,9 @@ async def get_training_plan(plan_id: UUID, session: AsyncSession = Depends(get_s
                 reps=exercise.reps,
                 break_time_seconds=exercise.break_time_seconds,
                 training_exercise_description=exercise.training_exercise_item.description,
-                training_exercise_video_url=exercise.training_exercise_item.video_url
+                training_exercise_video_url=exercise.training_exercise_item.video_url,
+                body_category_id=exercise.training_exercise_item.body_category.id,
+                body_category_name=exercise.training_exercise_item.body_category.name
             )
 
             exercise_data.append(execute_exercise)

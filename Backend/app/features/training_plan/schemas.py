@@ -77,6 +77,8 @@ class TrainingExerciseExecuteResponse(BaseModel):
     break_time_seconds: int
     training_exercise_description: str
     training_exercise_video_url: str | None = None
+    body_category_id: UUID
+    body_category_name: str
 
     model_config = ConfigDict(from_attributes=True)
 

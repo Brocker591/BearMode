@@ -91,7 +91,9 @@ export class TrainingExecuteTableComponent implements OnChanges {
                     reps: exercise.reps,
                     break_time_seconds: exercise.break_time_seconds,
                     exercise_description: exercise.training_exercise_description,
-                    exercise_video_url: exercise.training_exercise_video_url
+                    exercise_video_url: exercise.training_exercise_video_url,
+                    body_category_id: exercise.body_category_id,
+                    body_category_name: exercise.body_category_name
                 });
             }
         });

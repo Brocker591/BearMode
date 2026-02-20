@@ -51,6 +51,8 @@ export interface TrainingExerciseExecuteResponse {
     break_time_seconds: number;
     training_exercise_description: string;
     training_exercise_video_url?: string | null;
+    body_category_id: string;
+    body_category_name: string;
 }
 
 export interface TrainingPlanExecuteResponse {
@@ -72,5 +74,7 @@ export interface TrainingExerciseCompletion {
     break_time_seconds: number;
     exercise_description: string;
     exercise_video_url?: string | null;
+    body_category_id: string;
+    body_category_name: string;
     training_day?: string | null;
 }

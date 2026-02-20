@@ -11,6 +11,8 @@ class TrainingExerciseCompletion(BaseModel):
     exercise_id: UUID
     exercise_description: str
     exercise_video_url: str | None = None
+    body_category_id: UUID
+    body_category_name: str
     order: int
     equipment: str | None = None
     reps: int = 1

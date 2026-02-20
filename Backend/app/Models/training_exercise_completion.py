@@ -29,6 +29,10 @@ class TrainingExerciseCompletion(Base):
     exercise_description: Mapped[str] = mapped_column(
         String(255), nullable=False)
     exercise_video_url: Mapped[str] = mapped_column(String(255), nullable=True)
+    body_category_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("body_categories.id"), nullable=True
+    )
+    body_category_name: Mapped[str] = mapped_column(String(255), nullable=True)
 
     order: Mapped[int] = mapped_column(Integer, nullable=False)
     equipment: Mapped[str] = mapped_column(String(255), nullable=True)

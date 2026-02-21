@@ -61,6 +61,41 @@ export class Dashboard implements OnInit {
     ]
   };
 
+  // Body Category Radar Chart Data
+  public bodyCategoryChartOptions: ChartConfiguration<'radar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Körperbereich-Verteilung' }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        ticks: { stepSize: 1, backdropColor: 'transparent' },
+        pointLabels: { font: { size: 13, weight: 'bold' } },
+        grid: { color: 'rgba(59,130,246,0.15)' },
+        angleLines: { color: 'rgba(59,130,246,0.15)' }
+      }
+    }
+  };
+  public bodyCategoryChartType: 'radar' = 'radar';
+  public bodyCategoryChartData: ChartData<'radar'> = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Übungen',
+        backgroundColor: 'rgba(59,130,246,0.2)',
+        borderColor: '#3b82f6',
+        pointBackgroundColor: '#3b82f6',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#3b82f6'
+      }
+    ]
+  };
+
   ngOnInit() {
     const profile = this.profileService.selectedProfile();
     if (profile) {
@@ -100,9 +135,10 @@ export class Dashboard implements OnInit {
     // Top Exercises
     const exerciseCounts: { [key: string]: number } = {};
 
+    // Body Category Distribution
+    const categoryCounts: { [key: string]: number } = {};
+
     data.forEach(item => {
-      // Assuming training_day exists, otherwise use a fallback or current date if newly created?
-      // Backend schema says training_day: date | None. If None, skip?
       if (item.training_day) {
         const itemDate = new Date(item.training_day).toISOString().split('T')[0];
 
@@ -116,6 +152,11 @@ export class Dashboard implements OnInit {
       // Exercise frequency
       const name = item.exercise_description;
       exerciseCounts[name] = (exerciseCounts[name] || 0) + 1;
+
+      // Body category frequency
+      if (item.body_category_name) {
+        categoryCounts[item.body_category_name] = (categoryCounts[item.body_category_name] || 0) + 1;
+      }
     });
 
     this.exercisesThisWeek.set(thisWeekCount);
@@ -147,6 +188,24 @@ export class Dashboard implements OnInit {
             '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'
           ],
           hoverOffset: 4
+        }]
+      };
+    }
+
+    // Update Body Category Radar Chart
+    const categoryEntries = Object.entries(categoryCounts).sort(([a], [b]) => a.localeCompare(b));
+    if (categoryEntries.length > 0) {
+      this.bodyCategoryChartData = {
+        labels: categoryEntries.map(([name]) => name),
+        datasets: [{
+          data: categoryEntries.map(([, count]) => count),
+          label: 'Übungen',
+          backgroundColor: 'rgba(59,130,246,0.2)',
+          borderColor: '#3b82f6',
+          pointBackgroundColor: '#3b82f6',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: '#3b82f6'
         }]
       };
     }

@@ -45,4 +45,16 @@
             </div>
         </div>
     </div>
+
+    <!-- Body Category Radar Chart -->
+    <div class="mt-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 w-full">Körperbereich-Verteilung</h3>
+            <div class="w-full max-w-lg" style="height: 380px;">
+                <canvas baseChart [data]="bodyCategoryChartData" [options]="bodyCategoryChartOptions"
+                    [type]="bodyCategoryChartType">
+                </canvas>
+            </div>
+        </div>
+    </div>
 </div>

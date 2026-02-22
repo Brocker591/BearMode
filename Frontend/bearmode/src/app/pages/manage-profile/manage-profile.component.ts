@@ -42,6 +42,7 @@ export class ManageProfileComponent implements OnInit {
   readonly formState = signal<{ id?: string; name: string } | null>(null);
   /** Bound to the name input (ngModel); set when opening form, read in saveForm(). */
   formNameValue = '';
+  formEmojiValue: string | null = null;
   readonly formSaving = signal(false);
 
   readonly isEditMode = computed(() => {
@@ -69,6 +70,9 @@ export class ManageProfileComponent implements OnInit {
   }
 
   getProfileEmoji(profile: Profile): string {
+    if (profile.emoji) {
+      return profile.emoji;
+    }
     let hash = 0;
     if (profile.id) {
       for (let i = 0; i < profile.id.length; i++) {
@@ -102,16 +106,19 @@ export class ManageProfileComponent implements OnInit {
   openCreate(): void {
     this.formState.set({ name: '' });
     this.formNameValue = '';
+    this.formEmojiValue = this.animalEmojis[0];
   }
 
   openEdit(profile: Profile): void {
     this.formState.set({ id: profile.id, name: profile.name });
     this.formNameValue = profile.name;
+    this.formEmojiValue = profile.emoji || this.getProfileEmoji(profile);
   }
 
   cancelForm(): void {
     this.formState.set(null);
     this.formNameValue = '';
+    this.formEmojiValue = null;
   }
 
   saveForm(): void {
@@ -125,8 +132,8 @@ export class ManageProfileComponent implements OnInit {
 
     this.formSaving.set(true);
     const sub = state.id
-      ? this.profileService.update(state.id, { name })
-      : this.profileService.create({ name });
+      ? this.profileService.update(state.id, { name, emoji: this.formEmojiValue ?? undefined })
+      : this.profileService.create({ name, emoji: this.formEmojiValue ?? undefined });
 
     sub.subscribe({
       next: (profile) => {

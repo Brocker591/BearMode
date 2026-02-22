@@ -9,6 +9,7 @@ import { TrainingExecuteListComponent } from './pages/training-execute/training-
 import { TrainingExecuteSessionComponent } from './pages/training-execute/training-execute-session/training-execute-session.component';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { BodyCategoryComponent } from './pages/body-category/body-category.component';
+import { DataSyncComponent } from './pages/data-sync/data-sync.component';
 import { profileGuard } from './guards/profile.guard';
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
       { path: 'training-plans', component: TrainingPlanPageComponent, canActivate: [profileGuard] },
       { path: 'training-execute', component: TrainingExecuteListComponent, canActivate: [profileGuard] },
       { path: 'dashboard', component: Dashboard, canActivate: [profileGuard] },
+      { path: 'data-sync', component: DataSyncComponent },
     ]
   },
   {

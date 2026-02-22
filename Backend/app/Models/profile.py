@@ -16,6 +16,7 @@ class Profile(Base):
         default=uuid.uuid4,
     )
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    emoji: Mapped[str | None] = mapped_column(String(10), nullable=True)
 
     training_plans: Mapped[list["TrainingPlan"]] = relationship(
         "TrainingPlan",

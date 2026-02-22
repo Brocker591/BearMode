@@ -5,16 +5,18 @@ from pydantic import BaseModel
 
 class ProfileCreate(BaseModel):
     name: str
+    emoji: str | None = None
 
 
 class ProfileUpdate(BaseModel):
-    id: UUID
     name: str | None = None
+    emoji: str | None = None
 
 
 class ProfileResponse(BaseModel):
     id: UUID
     name: str
+    emoji: str | None = None
 
     # Pydantic v2 Einstellung: erlaubt Modelle aus Objekt-Attributen zu erzeugen.
     # Wenn `from_attributes` auf True gesetzt ist, kann `ProfileResponse`

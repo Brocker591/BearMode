@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,12 +11,12 @@ from app.features.training_exercise_items.schemas import TrainingExerciseItemUpd
 router = APIRouter()
 
 
-@router.put("/training-exercise-items", response_model=TrainingExerciseItemResponse, tags=["training-exercise-items"])
-async def update_training_exercise_item(body: TrainingExerciseItemUpdate, session: AsyncSession = Depends(get_session)) -> TrainingExerciseItemResponse:
+@router.put("/training-exercise-items/{item_id}", response_model=TrainingExerciseItemResponse, tags=["training-exercise-items"])
+async def update_training_exercise_item(item_id: UUID, body: TrainingExerciseItemUpdate, session: AsyncSession = Depends(get_session)) -> TrainingExerciseItemResponse:
     
     item = (await session.execute(
         select(TrainingExerciseItem)
-        .where(TrainingExerciseItem.id == body.id)
+        .where(TrainingExerciseItem.id == item_id)
     )).scalar_one_or_none()
 
     if item is None:
@@ -26,7 +27,7 @@ async def update_training_exercise_item(body: TrainingExerciseItemUpdate, sessio
     existing_description = (await session.execute(
         select(TrainingExerciseItem)
         .where(TrainingExerciseItem.description == body.description)
-        .where(TrainingExerciseItem.id != body.id)
+        .where(TrainingExerciseItem.id != item_id)
     )).scalar_one_or_none()
 
     if existing_description is not None:

@@ -44,6 +44,17 @@
                 </canvas>
             </div>
         </div>
+
+        <!-- Top Training Plans Chart -->
+        <div
+            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center col-span-1 lg:col-span-2">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 w-full">Beliebteste Trainingspläne</h3>
+            <div class="w-full h-64 flex justify-center">
+                <canvas baseChart [data]="planCompletionChartData" [options]="planCompletionChartOptions"
+                    [type]="planCompletionChartType">
+                </canvas>
+            </div>
+        </div>
     </div>
 
     <!-- Body Category Radar Chart -->

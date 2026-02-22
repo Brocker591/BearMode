@@ -5,10 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import type { TrainingExerciseExecuteResponse, TrainingExerciseCompletion } from '../../../models/training-plan';
+import type { TrainingExerciseExecuteResponse, TrainingExerciseCompletion, TrainingPlanCompletion } from '../../../models/training-plan';
 import { TrainingPlanService } from '../../../services/training-plan.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-training-execute-table',
@@ -41,6 +42,7 @@ export class TrainingExecuteTableComponent implements OnChanges {
     @Input() exercises: TrainingExerciseExecuteResponse[] = [];
     @Input() profileId!: string;
     @Input() trainingPlanId!: string;
+    @Input() trainingPlanName!: string;
 
     constructor(
         private trainingPlanService: TrainingPlanService,
@@ -98,7 +100,19 @@ export class TrainingExecuteTableComponent implements OnChanges {
             }
         });
 
-        this.trainingPlanService.complete(completions).subscribe({
+        const planCompletion: TrainingPlanCompletion = {
+            id: crypto.randomUUID(),
+            profile_id: this.profileId,
+            training_plan_id: this.trainingPlanId,
+            training_plan_name: this.trainingPlanName,
+            count_completed_exercises: this.completedExercises.size,
+            count_open_exercises: this.exercises.length - this.completedExercises.size
+        };
+
+        forkJoin({
+            exercisesInfo: this.trainingPlanService.complete(completions),
+            planInfo: this.trainingPlanService.completePlan([planCompletion])
+        }).subscribe({
             next: () => {
                 this.snackBar.open('Training erfolgreich abgeschlossen!', 'Ok', { duration: 3000 });
                 this.router.navigate(['/training-execute']);

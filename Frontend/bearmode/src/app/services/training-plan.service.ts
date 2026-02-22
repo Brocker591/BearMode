@@ -7,7 +7,8 @@ import type {
     TrainingPlanCreate,
     TrainingPlanUpdate,
     TrainingPlanExecuteResponse,
-    TrainingExerciseCompletion
+    TrainingExerciseCompletion,
+    TrainingPlanCompletion
 } from '../models/training-plan';
 
 @Injectable({ providedIn: 'root' })
@@ -50,6 +51,11 @@ export class TrainingPlanService {
             .pipe(catchError(this.handleError));
     }
 
+    completePlan(planCompletions: TrainingPlanCompletion[]): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/training-plan-completion`, planCompletions)
+            .pipe(catchError(this.handleError));
+    }
+
     private handleError(error: { status?: number; error?: { detail?: string }; message?: string }) {
         const detail =
             typeof error?.error?.detail === 'string'
@@ -60,6 +66,11 @@ export class TrainingPlanService {
 
     getCompletionHistory(profileId: string): Observable<TrainingExerciseCompletion[]> {
         return this.http.get<TrainingExerciseCompletion[]>(`${environment.apiUrl}/exercice-completion/byProfileId/${profileId}`)
+            .pipe(catchError(this.handleError));
+    }
+
+    getPlanCompletionHistory(profileId: string): Observable<TrainingPlanCompletion[]> {
+        return this.http.get<TrainingPlanCompletion[]>(`${environment.apiUrl}/training-plan-completion/byProfileId/${profileId}`)
             .pipe(catchError(this.handleError));
     }
 }

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database import get_session
@@ -9,12 +10,12 @@ from app.features.profiles.schemas import ProfileUpdate, ProfileResponse
 router = APIRouter()
 
 
-@router.put("/profiles", response_model=ProfileResponse, tags=["profiles"])
-async def update_profile(body: ProfileUpdate, session: AsyncSession = Depends(get_session)) -> ProfileResponse:
+@router.put("/profiles/{profile_id}", response_model=ProfileResponse, tags=["profiles"])
+async def update_profile(profile_id: UUID, body: ProfileUpdate, session: AsyncSession = Depends(get_session)) -> ProfileResponse:
     
     profile = (await session.execute(
         select(Profile)
-        .where(Profile.id == body.id)
+        .where(Profile.id == profile_id)
     )).scalar_one_or_none()
 
     if profile is None:
@@ -26,13 +27,16 @@ async def update_profile(body: ProfileUpdate, session: AsyncSession = Depends(ge
         existing_name = (await session.execute(
             select(Profile)
             .where(Profile.name == body.name)
-            .where(Profile.id != body.id)
+            .where(Profile.id != profile_id)
         )).scalar_one_or_none()
 
         if existing_name is not None:
             raise HTTPException(status_code=409, detail="Name already exists")
 
         profile.name = body.name
+
+    if body.emoji is not None:
+        profile.emoji = body.emoji
     
     await session.flush()
     await session.refresh(profile)

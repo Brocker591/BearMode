@@ -4,7 +4,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { TrainingPlanService } from '../../services/training-plan.service';
 import { ProfileService } from '../../services/profile.service';
-import { TrainingExerciseCompletion } from '../../models/training-plan';
+import { TrainingExerciseCompletion, TrainingPlanCompletion } from '../../models/training-plan';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -61,6 +62,28 @@ export class Dashboard implements OnInit {
     ]
   };
 
+  // Top Training Plans Chart Data
+  public planCompletionChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right' },
+      title: { display: true, text: 'Top Trainingspläne' }
+    }
+  };
+  public planCompletionChartType: ChartType = 'doughnut';
+  public planCompletionChartData: ChartData<'doughnut'> = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        backgroundColor: [
+          '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444'
+        ]
+      }
+    ]
+  };
+
   // Body Category Radar Chart Data
   public bodyCategoryChartOptions: ChartConfiguration<'radar'>['options'] = {
     responsive: true,
@@ -104,10 +127,42 @@ export class Dashboard implements OnInit {
   }
 
   loadData(profileId: string) {
-    this.trainingPlanService.getCompletionHistory(profileId).subscribe({
-      next: (data) => this.processData(data),
+    forkJoin({
+      exercises: this.trainingPlanService.getCompletionHistory(profileId),
+      plans: this.trainingPlanService.getPlanCompletionHistory(profileId)
+    }).subscribe({
+      next: (data) => {
+        this.processData(data.exercises);
+        this.processPlanData(data.plans);
+      },
       error: (err) => console.error('Failed to load history', err)
     });
+  }
+
+  processPlanData(data: TrainingPlanCompletion[]) {
+    const planCounts: { [key: string]: number } = {};
+
+    data.forEach(item => {
+      const name = item.training_plan_name;
+      planCounts[name] = (planCounts[name] || 0) + 1;
+    });
+
+    const sortedPlans = Object.entries(planCounts)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5);
+
+    if (sortedPlans.length > 0) {
+      this.planCompletionChartData = {
+        labels: sortedPlans.map(([name]) => name),
+        datasets: [{
+          data: sortedPlans.map(([, count]) => count),
+          backgroundColor: [
+            '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444'
+          ],
+          hoverOffset: 4
+        }]
+      };
+    }
   }
 
   processData(data: TrainingExerciseCompletion[]) {

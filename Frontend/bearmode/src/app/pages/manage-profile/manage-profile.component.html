@@ -22,6 +22,18 @@
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="formNameValue" placeholder="z.B. Bärenstark" (keydown.enter)="saveForm()" />
         </mat-form-field>
+
+        <div class="emoji-selector-section">
+          <p class="emoji-selector-title">Wähle dein Profil-Tier</p>
+          <div class="emoji-grid">
+            @for (emoji of animalEmojis; track emoji) {
+            <div class="emoji-option" [class.selected]="formEmojiValue === emoji" (click)="formEmojiValue = emoji"
+              (keydown.enter)="formEmojiValue = emoji" tabindex="0">
+              {{ emoji }}
+            </div>
+            }
+          </div>
+        </div>
         <div class="form-actions">
           <button mat-button (click)="cancelForm()" [disabled]="formSaving()">Abbrechen</button>
           <button mat-raised-button color="primary" (click)="saveForm()" [disabled]="formSaving()">

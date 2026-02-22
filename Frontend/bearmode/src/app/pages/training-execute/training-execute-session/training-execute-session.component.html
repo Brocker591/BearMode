@@ -18,7 +18,7 @@
         </div>
         } @else {
         <app-training-execute-table [exercises]="plan()?.exercises || []" [profileId]="plan()?.profile_id!"
-            [trainingPlanId]="plan()?.id!"></app-training-execute-table>
+            [trainingPlanId]="plan()?.id!" [trainingPlanName]="plan()?.name!"></app-training-execute-table>
         }
     </div>
 </div>

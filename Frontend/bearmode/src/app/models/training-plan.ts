@@ -78,3 +78,13 @@ export interface TrainingExerciseCompletion {
     body_category_name: string;
     training_day?: string | null;
 }
+
+export interface TrainingPlanCompletion {
+    id: string;
+    profile_id: string;
+    training_plan_id: string;
+    training_plan_name: string;
+    count_completed_exercises: number;
+    count_open_exercises: number;
+    training_day?: string | null;
+}

@@ -45,6 +45,12 @@ import { MatIconModule } from '@angular/material/icon';
                 <span class="profile-name">Neu erstellen</span>
               </div>
           </div>
+          <div class="bottom-actions" style="margin-top: 2rem;">
+            <button mat-stroked-button color="primary" (click)="goToDataSync()" style="border-radius: 20px; padding: 0 1.5rem;">
+              <mat-icon>sync</mat-icon>
+              Daten Import / Export
+            </button>
+          </div>
         }
       </div>
     </div>
@@ -228,6 +234,9 @@ export class SelectProfileComponent implements OnInit {
   }
 
   getProfileEmoji(profile: Profile): string {
+    if (profile.emoji) {
+      return profile.emoji;
+    }
     let hash = 0;
     if (profile.id) {
       for (let i = 0; i < profile.id.length; i++) {
@@ -267,5 +276,9 @@ export class SelectProfileComponent implements OnInit {
 
   createProfile(): void {
     this.router.navigate(['/manage-profile'], { queryParams: { create: 'true' } });
+  }
+
+  goToDataSync(): void {
+    this.router.navigate(['/data-sync']);
   }
 }

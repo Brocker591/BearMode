@@ -12,7 +12,6 @@ class TrainingExerciseItemCreate(BaseModel):
 
 
 class TrainingExerciseItemUpdate(BaseModel):
-    id: UUID
     description: str
     video_url: str | None = None
     body_category_id: UUID

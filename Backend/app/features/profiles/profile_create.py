@@ -20,7 +20,7 @@ async def create_profile(body: ProfileCreate, session: AsyncSession = Depends(ge
     if existing is not None:
         raise HTTPException(status_code=409, detail="Name already exists")
 
-    profile = Profile(name=body.name)
+    profile = Profile(name=body.name, emoji=body.emoji)
     session.add(profile)
     await session.flush()
     await session.refresh(profile)

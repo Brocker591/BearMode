@@ -31,7 +31,8 @@ from app.features.body_category.body_category_get_all import router as body_cate
 from app.features.body_category.body_category_get_by_id import router as body_category_get_by_id_router
 from app.features.body_category.body_category_update import router as body_category_update_router
 from app.features.body_category.body_category_delete import router as body_category_delete_router
-from app.features.data_sync.router import router as data_sync_router
+from app.features.data_sync.data_sync_export import router as data_sync_export_router
+from app.features.data_sync.data_sync_import import router as data_sync_import_router
 
 
 @asynccontextmanager
@@ -91,4 +92,5 @@ app.include_router(body_category_get_all_router)
 app.include_router(body_category_get_by_id_router)
 app.include_router(body_category_update_router)
 app.include_router(body_category_delete_router)
-app.include_router(data_sync_router)
+app.include_router(data_sync_export_router)
+app.include_router(data_sync_import_router)

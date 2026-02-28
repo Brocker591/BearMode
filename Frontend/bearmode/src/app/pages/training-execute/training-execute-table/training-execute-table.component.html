@@ -63,17 +63,18 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="video">
+            <ng-container matColumnDef="link">
                 <th mat-header-cell *matHeaderCellDef class="w-12"></th>
                 <td mat-cell *matCellDef="let element">
                     @if(element.training_exercise_video_url) {
-                    <button mat-icon-button color="primary" (click)="openVideo(element.training_exercise_video_url)"
-                        matTooltip="Video ansehen" [disabled]="isCompleted(element)">
-                        <mat-icon>play_circle_outline</mat-icon>
-                    </button>
+                    <a mat-icon-button color="primary" [href]="element.training_exercise_video_url" target="_blank"
+                        matTooltip="Url öffnen" (click)="$event.stopPropagation()">
+                        <mat-icon>open_in_new</mat-icon>
+                    </a>
                     }
                 </td>
             </ng-container>
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"

@@ -51,7 +51,7 @@ export class TrainingExecuteTableComponent implements OnChanges {
     ) { }
 
     dataSource = new MatTableDataSource<TrainingExerciseExecuteResponse>([]);
-    displayedColumns: string[] = ['completed', 'order', 'description', 'sets_info', 'break_time', 'video'];
+    displayedColumns: string[] = ['completed', 'order', 'description', 'sets_info', 'break_time', 'link'];
 
     completedExercises = new Set<string>(); // Stores IDs of completed exercises
 

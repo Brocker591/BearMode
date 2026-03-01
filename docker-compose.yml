@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: bearmode-api
+    ports:
+      # Wir mappen den selten genutzten Port 29471 vom Host auf den Container-Port 8000
+      - "29471:8000"
+    restart: unless-stopped
+    # Lade die Umgebungsvariablen inkl. Connection String aus der .env Datei im Backend-Verzeichnis
+    env_file:
+      - ./Backend/.env

@@ -74,3 +74,10 @@ src/environments/environment.prod.ts
 # OS / Editor
 ############################
 *.orig
+
+
+############################
+# Release
+############################
+
+Frontend/bearmode/release

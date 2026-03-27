@@ -40,7 +40,8 @@ Bevor du die App baust, solltest du sicherstellen, dass die Applikation weiß, w
    cd Frontend/bearmode
    npm install
    npm run build
-   npm run electron:build -- --linux
+   //npm run electron:build -- --linux
+   npm run build:electron --linux 
    ```
    *(Tipp: Der genaue Build-Befehl hängt von deiner `package.json` ab. Manchmal reicht auch nur `npm run electron:build` oder `npm run make`.)*
    
